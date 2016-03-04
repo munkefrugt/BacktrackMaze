@@ -130,8 +130,17 @@ public class RecursiveBacktracker
                     else {
                         // make path
                         // -2 is because we go up so we have to use an "earlier"creaated aray
+                        // clear path 1. step
+                        maze.get(currentRowPosition-1).set(currentColumnPosition," ");
+
+                        // clear path 2. step
                         maze.get(currentRowPosition-2).set(currentColumnPosition," ");
                         System.out.println("make path up to"+ (currentRowPosition-2)+","+(currentColumnPosition-1) );
+
+                        // set new position:
+                        // we move 2 steps up to our new position.
+                        currentRowPosition=currentRowPosition-2;
+                        // Column position is not changed!
                     }
 
 
