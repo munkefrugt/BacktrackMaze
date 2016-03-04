@@ -13,6 +13,10 @@ public class RecursiveBacktracker
     int totalHeight;
     int width;
     int height;
+    int currentRowPosition;
+    int currentColumnPosition;
+
+
     ArrayList<ArrayList<String>> maze = new ArrayList<ArrayList<String>>();
 
     public RecursiveBacktracker()
@@ -25,6 +29,8 @@ public class RecursiveBacktracker
         System.out.println("enter height");
         int height = input.nextInt();
         System.out.println("your  height is: " + height);
+
+
         setSize(width,height);
 
     }
@@ -34,6 +40,7 @@ public class RecursiveBacktracker
     {
         this.width=width;
         this.height=height;
+        // we add 4 because of the border takes up 4 spaces.
         this.totalWidth=width+4;
         this.totalHeight=height+4;
 
@@ -51,8 +58,10 @@ public class RecursiveBacktracker
         1. make a fillid space with a make a barrier
         */
         fillMaze();
+        makeRandomStartPosition();
+        ChooseANewRandomDirection();//
         printMaze();
-
+        //rebuild();
         /*
 
             fill out all the space with "@"
@@ -97,6 +106,114 @@ public class RecursiveBacktracker
 
 
 
+
+
+
+    }
+
+    private void ChooseANewRandomDirection()
+    {
+
+            int randomDirection = (int)(Math.random() *4 );
+                randomDirection= 0;
+            if(randomDirection == 0)
+            {
+                    System.out.println("up");
+                    // if its already blank
+                    if (maze.get(currentRowPosition-2).get(currentColumnPosition).equals(" ")||
+                            maze.get(currentRowPosition-2).get(currentColumnPosition).equals("#")) {
+                        // try an other direction
+                        ChooseANewRandomDirection();
+                    }
+
+                    // there is a wall to smash
+                    else {
+                        // make path
+                        // -2 is because we go up so we have to use an "earlier"creaated aray
+                        maze.get(currentRowPosition-2).set(currentColumnPosition," ");
+                        System.out.println("make path up to"+ (currentRowPosition-2)+","+(currentColumnPosition-1) );
+                    }
+
+
+
+            }
+            else if(randomDirection == 1)
+            {
+                System.out.println("down");
+            }
+            else if(randomDirection == 2)
+            {
+                System.out.println("left");
+            }
+            else if(randomDirection == 3)
+            {
+                System.out.println("right");
+            }
+            else
+                System.out.println("error!");
+
+
+
+
+
+    }
+
+    private void rebuild()
+    {
+
+            System.out.println("rebuild a new one? y? n? ");
+
+
+
+            System.out.println("enter answer");
+            String answer = input.nextLine();
+            System.out.println("your  answer is: " + answer);
+
+            try
+            {
+                if(answer.equals("y"))
+                {
+                    generateMaze();
+                    rebuild();
+                }
+                else if(answer.equals("n"))
+                {
+                    System.out.println(" now exit");
+                }
+                else
+                {
+                    System.out.println("try again, only  small letters!");
+                    rebuild();
+                    System.out.println("no rebuild generation happened");
+                }
+
+            }
+            catch (IndexOutOfBoundsException e)
+            {
+                System.err.println("IndexOutOfBoundsException: " + e.getMessage());
+                rebuild();
+            }
+
+
+    }
+
+    private void makeRandomStartPosition()
+    {
+
+        // if startRow=2 and startColumn=2 its like 1,1 like a coordinate system that starts in the left corner.
+        // makes a number 0-height or width (it also makes 0)
+        int startRow = (int)(Math.random() *height )+2; // the higher the number the further down the board you go
+        int startColumn = (int)(Math.random() *width )+2;// the higher the number the further right the board you go
+
+        // vil være første koordinatet:
+        // startRow=2;
+        //startColumn=2;
+
+        maze.get(startRow).set(startColumn," ");
+        // husk
+        System.out.println("start position: ("+(startRow-1)+","+(startColumn-1)+")");
+        currentRowPosition=startRow;
+        currentColumnPosition=startColumn;
 
 
 
