@@ -34,6 +34,9 @@ public class RecursiveBacktracker
     {
         this.width=width;
         this.height=height;
+        this.totalWidth=width+4;
+        this.totalHeight=height+4;
+
         System.out.println(width+height);
     }
 
@@ -103,10 +106,10 @@ public class RecursiveBacktracker
     {
 
 
-        for (int j = 0; j <16 ; j++)
+        for (int j = 0; j <totalHeight ; j++)
         {
-
-            for (int i = 0; i <28 ; i++)
+            System.out.print(j+"\t");
+            for (int i = 0; i <totalWidth ; i++)
             {
 
                 System.out.print(maze.get(j).get(i));
@@ -120,6 +123,15 @@ public class RecursiveBacktracker
 
     public void fillMaze()
     {
+
+        ArrayList<String> border = new ArrayList<String>();
+        for (int j = 0; j <totalWidth ; j++)
+        {
+            border.add("#");
+
+        }
+        maze.add(border);
+        maze.add(border);
 
         for (int i = 0; i < height ; i++)
         {
@@ -137,6 +149,9 @@ public class RecursiveBacktracker
             list.add("#");
             maze.add(list);
         }
+
+        maze.add(border);
+        maze.add(border);
     }
 
 }
