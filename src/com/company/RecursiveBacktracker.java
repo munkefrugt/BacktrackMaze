@@ -25,7 +25,7 @@ public class RecursiveBacktracker
         System.out.println("enter height");
         int height = input.nextInt();
         System.out.println("your  height is: " + height);
-        setSize(5,6);
+        setSize(width,height);
 
     }
 
@@ -121,14 +121,14 @@ public class RecursiveBacktracker
     public void fillMaze()
     {
 
-        for (int i = 0; i < 16 ; i++)
+        for (int i = 0; i < height ; i++)
         {
 
 
             ArrayList<String> list = new ArrayList<String>();
             list.add("#");
             list.add("#");
-            for (int j = 0; j <24 ; j++)
+            for (int j = 0; j <width ; j++)
             {
                 list.add("@");
 
