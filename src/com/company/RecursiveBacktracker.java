@@ -22,6 +22,11 @@ public class RecursiveBacktracker
     // this will start backtraking is they are all one
     int failedPathDirections[] = {0,0,0,0,};
 
+    // used by the backtracker.
+    int previousRowPosition;
+    int previousColumnPosition;
+
+
     ArrayList<ArrayList<String>> maze = new ArrayList<ArrayList<String>>();
 
     public RecursiveBacktracker()
@@ -137,7 +142,7 @@ public class RecursiveBacktracker
 
                 // UP:
         // sæt den ikke for højt, 70 begynder at blive svært..
-        while (pathBuild<30)
+        while (pathBuild<80)
         {
                 //Try to build path to the UP, if succes take to steps up
                 if(randomDirection == 0)
@@ -153,6 +158,8 @@ public class RecursiveBacktracker
                             if(failedPathDirections[0]==1 && failedPathDirections[1]==1 && failedPathDirections[2]==1 && failedPathDirections[3]==1)
                             {
                                 System.out.println("all directions have failed. start backtracking!");
+                                printMaze();
+                                backtracking();
                                 //reset failedPathDirections array
                                 // activate backtracking
 
@@ -177,6 +184,11 @@ public class RecursiveBacktracker
                             // clear path 2. step
                             maze.get(currentRowPosition-2).set(currentColumnPosition," ");
                             System.out.println("make path up to row , column"+ (currentRowPosition-3)+","+(currentColumnPosition-1) );
+
+                            // save the position we just came from. will be used in back tracking:
+                            // Set  previous position to current:
+                            previousRowPosition = currentRowPosition;
+                            previousColumnPosition= currentColumnPosition;
 
                             // set new position:
                             // we move 2 steps up to our new position.
@@ -212,6 +224,8 @@ public class RecursiveBacktracker
                         if(failedPathDirections[0]==1 && failedPathDirections[1]==1 && failedPathDirections[2]==1 && failedPathDirections[3]==1)
                         {
                             System.out.println("all directions have failed. start backtracking!");
+                            printMaze();
+                            backtracking();
                             //reset failedPathDirections array
                             // activate backtracking
 
@@ -237,6 +251,12 @@ public class RecursiveBacktracker
                         maze.get(currentRowPosition+2).set(currentColumnPosition," ");
                         // +3 and +1 is just to get the names right.
                         System.out.println("make path DOWN to : roww,column("+ (currentRowPosition+3)+","+(currentColumnPosition+1)+")" );
+
+                        // save the position we just came from. will be used in back tracking:
+                        // Set  previous position to current:
+                        previousRowPosition = currentRowPosition;
+                        previousColumnPosition= currentColumnPosition;
+
 
                         // set new position:
                         // we move 2 steps up to our new position.
@@ -266,6 +286,9 @@ public class RecursiveBacktracker
                         if(failedPathDirections[0]==1 && failedPathDirections[1]==1 && failedPathDirections[2]==1 && failedPathDirections[3]==1)
                         {
                             System.out.println("all directions have failed. start backtracking!");
+
+                            printMaze();
+                            backtracking();
                             //reset failedPathDirections array
                             // activate backtracking
 
@@ -290,6 +313,12 @@ public class RecursiveBacktracker
                         // clear path 2. step
                         maze.get(currentRowPosition).set(currentColumnPosition-2," ");
                         System.out.println("make path LEFT to : ("+ (currentRowPosition-2)+","+(currentColumnPosition-1)+")" );
+
+                        // save the position we just came from. will be used in back tracking:
+                        // Set  previous position to current:
+                        previousRowPosition = currentRowPosition;
+                        previousColumnPosition= currentColumnPosition;
+
 
                         // set new position:
                         // we move 2 steps up to our new position.
@@ -319,7 +348,10 @@ public class RecursiveBacktracker
                         if(failedPathDirections[0]==1 && failedPathDirections[1]==1 && failedPathDirections[2]==1 && failedPathDirections[3]==1)
                         {
                             System.out.println("all directions have failed. start backtracking!");
+
+                            printMaze();
                             backtracking();
+
                             // reset failedPathDirections array
                             // activate backtracking
 
@@ -344,6 +376,12 @@ public class RecursiveBacktracker
                         // clear path 2. step
                         maze.get(currentRowPosition).set(currentColumnPosition+2," ");
                         System.out.println("make path RIGHT to : ("+ (currentRowPosition+2)+","+(currentColumnPosition+1)+")" );
+
+                        // save the position we just came from. will be used in back tracking:
+                        // Set  previous position to current:
+                        previousRowPosition = currentRowPosition;
+                        previousColumnPosition= currentColumnPosition;
+
 
                         // set new position:
                         // we move 2 steps up to our new position.
@@ -383,6 +421,11 @@ public class RecursiveBacktracker
     private void backtracking()
     {
         // what was last step?
+        System.out.println("COMPARE THE TO COORDINATES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+        System.out.println("currentColumnPosition :"+currentColumnPosition +"currentRowPosition :" +currentRowPosition);
+        System.out.println("previousColumnPosition :"+previousColumnPosition +"previousRowPosition :" +previousRowPosition);
+
+
         // move to last step
         // try a random direction.
         // build path.
