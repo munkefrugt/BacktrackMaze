@@ -148,7 +148,8 @@ public class RecursiveBacktracker
                                 maze.get(currentRowPosition-2).get(currentColumnPosition).equals("#")) {
                             // try an other direction
                             System.out.println("cant take this way up!");
-                            //if all directions have been tried.
+
+                            //if all directions have been tried. start BACK TRACKING!
                             if(failedPathDirections[0]==1 && failedPathDirections[1]==1 && failedPathDirections[2]==1 && failedPathDirections[3]==1)
                             {
                                 System.out.println("all directions have failed. start backtracking!");
@@ -203,13 +204,25 @@ public class RecursiveBacktracker
 
                     // NO SUCCES.Its already blank, Don't make path!
                     if (maze.get(currentRowPosition+2).get(currentColumnPosition).equals(" ")||
-                            maze.get(currentRowPosition+2).get(currentColumnPosition).equals("#")) {
+                            maze.get(currentRowPosition+2).get(currentColumnPosition).equals("#"))
+                    {
                         // try an other direction
                         System.out.println("cant take this way down!");
+                        //if all directions have been tried. start BACK TRACKING!
+                        if(failedPathDirections[0]==1 && failedPathDirections[1]==1 && failedPathDirections[2]==1 && failedPathDirections[3]==1)
+                        {
+                            System.out.println("all directions have failed. start backtracking!");
+                            //reset failedPathDirections array
+                            // activate backtracking
 
-                        // test:
-
-                        ChoosePathAndBuild();
+                        }
+                        else
+                        {
+                            System.out.println("try an other direction");
+                            // tell the "failedPathDirections" array that the path couldent be made.
+                            failedPathDirections[1]=1;
+                            ChoosePathAndBuild();
+                        }
 
                     }
 
@@ -232,6 +245,7 @@ public class RecursiveBacktracker
                         System.out.println("currentColumnPosition :"+currentColumnPosition +"currentRowPosition :" + currentRowPosition);
                         // Row position should not be changed!
                         pathBuild++;
+                        resetFailedPathDirectionsArray();
                         ChoosePathAndBuild();
                     }
                 }
@@ -248,8 +262,21 @@ public class RecursiveBacktracker
                     {
                         // try an other direction
                         System.out.println("cant take this way LEFT!");
+                        //if all directions have been tried. start BACK TRACKING!
+                        if(failedPathDirections[0]==1 && failedPathDirections[1]==1 && failedPathDirections[2]==1 && failedPathDirections[3]==1)
+                        {
+                            System.out.println("all directions have failed. start backtracking!");
+                            //reset failedPathDirections array
+                            // activate backtracking
 
-                        ChoosePathAndBuild();
+                        }
+                        else
+                        {
+                            System.out.println("try an other direction");
+                            // tell the "failedPathDirections" array that the path couldent be made.
+                            failedPathDirections[2]=1;
+                            ChoosePathAndBuild();
+                        }
 
                     }
 
@@ -271,6 +298,7 @@ public class RecursiveBacktracker
                         System.out.println("currentColumnPosition :"+currentColumnPosition +"currentRowPosition :" +currentRowPosition);
 
                         pathBuild++;
+                        resetFailedPathDirectionsArray();
                         ChoosePathAndBuild();
                     }
                 }
@@ -287,8 +315,22 @@ public class RecursiveBacktracker
                     {
                         // try an other direction
                         System.out.println("cant take this way right!");
+                        //if all directions have been tried. start BACK TRACKING!
+                        if(failedPathDirections[0]==1 && failedPathDirections[1]==1 && failedPathDirections[2]==1 && failedPathDirections[3]==1)
+                        {
+                            System.out.println("all directions have failed. start backtracking!");
+                            backtracking();
+                            // reset failedPathDirections array
+                            // activate backtracking
 
-                        ChoosePathAndBuild();
+                        }
+                        else
+                        {
+                            System.out.println("try an other direction");
+                            // tell the "failedPathDirections" array that the path couldent be made.
+                            failedPathDirections[3]=1;
+                            ChoosePathAndBuild();
+                        }
 
                     }
 
@@ -310,6 +352,7 @@ public class RecursiveBacktracker
                         System.out.println("currentColumnPosition :"+currentColumnPosition +"currentRowPosition :" +currentRowPosition);
 
                         pathBuild++;
+                        resetFailedPathDirectionsArray();
                         ChoosePathAndBuild();
                     }
 
@@ -333,6 +376,18 @@ public class RecursiveBacktracker
         }
         printMaze();
         System.out.println(pathBuild +" path  were build");
+
+
+    }
+
+    private void backtracking()
+    {
+        // what was last step?
+        // move to last step
+        // try a random direction.
+        // build path.
+        // use method "ChoosePathAndBuild()"
+        // done.
 
 
     }
