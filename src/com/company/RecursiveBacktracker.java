@@ -67,11 +67,14 @@ public class RecursiveBacktracker
         System.out.println("make rand start pos");
         makeRandomStartPosition();
         System.out.println("Print start position");
-        printMaze();
+        //printMaze();
         System.out.println("find RandDirection  :" + randomDirection);
 
 
-        ChooseANewRandomDirection();//
+        ChoosePathAndBuild();// chose a path randomly and try to make a path.
+
+        System.out.println("END*******************************************************************************");
+
         printMaze();
 
         //rebuild();
@@ -79,7 +82,7 @@ public class RecursiveBacktracker
 
             fill out all the space with "@"
         2. make a random starting point. make it the position.
-        3. ChooseANewRandomDirection() //chose a random direction, up, down, left, right . make a direction selector.
+        3. ChoosePathAndBuild() //chose a random direction, up, down, left, right . make a direction selector.
             (1= up, 2 = down, 3 = left, 4= right)
             if (randomdirection == 1) //up
 
@@ -88,7 +91,7 @@ public class RecursiveBacktracker
                     // if ALL READY EMPTY choose new direction
                     if (mazeList.get(row).get(column).equals(" ")||mazeList.get(row).get(column).equals("*") )//
                         if the position is blank then
-                        // go back to ChooseANewRandomDirection()
+                        // go back to ChoosePathAndBuild()
                         // note that the direction has been tried.
                     else // CARVE
                         carveAPath() // replace the 2 elements to reach the next position.
@@ -124,16 +127,16 @@ public class RecursiveBacktracker
     // 2 = no
 
     // this is the recursive method
-    private void ChooseANewRandomDirection()
+    private void ChoosePathAndBuild()
     {
 
-                //randomDirection = (int)(Math.random() *2 );
+                randomDirection = (int)(Math.random() *4 );
                 //    randomDirection= 0;
 
                 // UP:
 
-        //while (pathBuild<10)
-        //{
+        while (pathBuild<100)
+        {
                 //Try to build path to the UP, if succes take to steps up
                 if(randomDirection == 0)
                 {
@@ -144,7 +147,7 @@ public class RecursiveBacktracker
                             // try an other direction
                             System.out.println("cant take this way up!");
 
-                            //ChooseANewRandomDirection();
+                            ChoosePathAndBuild();
 
                         }
 
@@ -167,7 +170,7 @@ public class RecursiveBacktracker
                             //test
                             //randomDirection=3;  //left
                             pathBuild++;
-                            //ChooseANewRandomDirection();
+                            ChoosePathAndBuild();
                         }
 
 
@@ -188,7 +191,7 @@ public class RecursiveBacktracker
 
                         // test:
 
-                        //ChooseANewRandomDirection();
+                        ChoosePathAndBuild();
 
                     }
 
@@ -211,7 +214,7 @@ public class RecursiveBacktracker
                         System.out.println("currentColumnPosition :"+currentColumnPosition +"currentRowPosition :" + currentRowPosition);
                         // Row position should not be changed!
                         pathBuild++;
-                        //ChooseANewRandomDirection();
+                        ChoosePathAndBuild();
                     }
                 }
 
@@ -228,7 +231,7 @@ public class RecursiveBacktracker
                         // try an other direction
                         System.out.println("cant take this way LEFT!");
 
-                        //ChooseANewRandomDirection();
+                        ChoosePathAndBuild();
 
                     }
 
@@ -250,7 +253,7 @@ public class RecursiveBacktracker
                         System.out.println("currentColumnPosition :"+currentColumnPosition +"currentRowPosition :" +currentRowPosition);
 
                         pathBuild++;
-                        //ChooseANewRandomDirection();
+                        ChoosePathAndBuild();
                     }
                 }
 
@@ -265,9 +268,9 @@ public class RecursiveBacktracker
                             maze.get(currentRowPosition).get(currentColumnPosition+2).equals("#"))
                     {
                         // try an other direction
-                        System.out.println("cant take this way LEFT!");
+                        System.out.println("cant take this way right!");
 
-                        //ChooseANewRandomDirection();
+                        ChoosePathAndBuild();
 
                     }
 
@@ -289,7 +292,7 @@ public class RecursiveBacktracker
                         System.out.println("currentColumnPosition :"+currentColumnPosition +"currentRowPosition :" +currentRowPosition);
 
                         pathBuild++;
-                        //ChooseANewRandomDirection();
+                        ChoosePathAndBuild();
                     }
 
                 }
@@ -297,17 +300,22 @@ public class RecursiveBacktracker
                 else
                 {
                     System.out.println("error!");
+                    ChoosePathAndBuild();
                 }
 
-        //}
+            System.out.println("amount pathbuild  :"+pathBuild);
+            System.out.println("previus rand direction " + randomDirection );
+            System.out.println("enter randomDirection");
+            randomDirection = input.nextInt();
+
+            System.out.println("you entered New random direction : " + randomDirection);
+
+
+
+        }
         printMaze();
-        System.out.println("previus rand direction " + randomDirection );
-        System.out.println("enter randomDirection");
-        randomDirection = input.nextInt();
+        System.out.println(pathBuild +" path  were build");
 
-        System.out.println("you entered New random direction : " + randomDirection);
-
-        ChooseANewRandomDirection();
 
     }
 
