@@ -134,8 +134,8 @@ public class RecursiveBacktracker
                 //    randomDirection= 0;
 
                 // UP:
-
-        while (pathBuild<100)
+        // sæt den ikke for højt, 70 begynder at blive svært..
+        while (pathBuild<30)
         {
                 //Try to build path to the UP, if succes take to steps up
                 if(randomDirection == 0)
