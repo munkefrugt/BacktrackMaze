@@ -158,7 +158,7 @@ public class RecursiveBacktracker
                             if(failedPathDirections[0]==1 && failedPathDirections[1]==1 && failedPathDirections[2]==1 && failedPathDirections[3]==1)
                             {
                                 System.out.println("all directions have failed. start backtracking!");
-                                printMaze();
+                                //printMaze();
                                 backtracking();
                                 //reset failedPathDirections array
                                 // activate backtracking
@@ -224,7 +224,7 @@ public class RecursiveBacktracker
                         if(failedPathDirections[0]==1 && failedPathDirections[1]==1 && failedPathDirections[2]==1 && failedPathDirections[3]==1)
                         {
                             System.out.println("all directions have failed. start backtracking!");
-                            printMaze();
+                            //printMaze();
                             backtracking();
                             //reset failedPathDirections array
                             // activate backtracking
@@ -287,7 +287,7 @@ public class RecursiveBacktracker
                         {
                             System.out.println("all directions have failed. start backtracking!");
 
-                            printMaze();
+                            //printMaze();
                             backtracking();
                             //reset failedPathDirections array
                             // activate backtracking
@@ -349,7 +349,7 @@ public class RecursiveBacktracker
                         {
                             System.out.println("all directions have failed. start backtracking!");
 
-                            printMaze();
+                            //printMaze();
                             backtracking();
 
                             // reset failedPathDirections array
@@ -412,7 +412,7 @@ public class RecursiveBacktracker
 
 
         }
-        printMaze();
+        //printMaze();
         System.out.println(pathBuild +" path  were build");
 
 
@@ -420,17 +420,43 @@ public class RecursiveBacktracker
 
     private void backtracking()
     {
-        // what was last step?
-        System.out.println("COMPARE THE TO COORDINATES!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        System.out.println("currentColumnPosition :"+currentColumnPosition +"currentRowPosition :" +currentRowPosition);
-        System.out.println("previousColumnPosition :"+previousColumnPosition +"previousRowPosition :" +previousRowPosition);
 
+        // skal tage et spring på 2 felter!!
+        System.out.println("backtrack mode!!!!!!!!!!!!!");
+        /*
+
+        // what was last step?
+
+        // It works like a dream :)
+        */
+        System.out.println("currentColumnPosition :"+currentColumnPosition +" currentRowPosition :" +currentRowPosition);
+        System.out.println("previousColumnPosition :"+previousColumnPosition +" previousRowPosition :" +previousRowPosition);
 
         // move to last step
-        // try a random direction.
-        // build path.
-        // use method "ChoosePathAndBuild()"
-        // done.
+        // set current position to previous position.
+        currentColumnPosition= previousColumnPosition;
+        currentRowPosition = previousRowPosition;
+        // which direction did you just come from? block that direction.
+        
+
+        // now try to build a new path.
+
+
+        //TEST
+
+        System.out.println("continue y n?");
+        String name = input.nextLine();
+        System.out.println("your name is: " + name);
+
+        if (name.equals("y"))
+        {
+            printMaze();
+        ChoosePathAndBuild();
+
+        }
+        else
+            System.out.println("END");
+
 
 
     }
