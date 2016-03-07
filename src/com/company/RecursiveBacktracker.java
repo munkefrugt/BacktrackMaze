@@ -18,7 +18,9 @@ public class RecursiveBacktracker
     // count amount of path build
     int pathBuild;
     int randomDirection;
-
+    // this array changes if therehas been made a try to go down a certain path. 0->1
+    // this will start backtraking is they are all one
+    int failedPathDirections[] = {0,0,0,0,};
 
     ArrayList<ArrayList<String>> maze = new ArrayList<ArrayList<String>>();
 
@@ -146,8 +148,21 @@ public class RecursiveBacktracker
                                 maze.get(currentRowPosition-2).get(currentColumnPosition).equals("#")) {
                             // try an other direction
                             System.out.println("cant take this way up!");
+                            //if all directions have been tried.
+                            if(failedPathDirections[0]==1 && failedPathDirections[1]==1 && failedPathDirections[2]==1 && failedPathDirections[3]==1)
+                            {
+                                System.out.println("all directions have failed. start backtracking!");
+                                //reset failedPathDirections array
+                                // activate backtracking
 
+                            }
+                            else
+                            {
+                            System.out.println("try an other direction");
+                            // tell the "failedPathDirections" array that the path couldent be made.
+                            failedPathDirections[0]=1;
                             ChoosePathAndBuild();
+                            }
 
                         }
 
@@ -170,6 +185,9 @@ public class RecursiveBacktracker
                             //test
                             //randomDirection=3;  //left
                             pathBuild++;
+                            //reset array "failedPathDirections" array
+                            resetFailedPathDirectionsArray();
+
                             ChoosePathAndBuild();
                         }
 
@@ -317,6 +335,16 @@ public class RecursiveBacktracker
         System.out.println(pathBuild +" path  were build");
 
 
+    }
+
+    private void resetFailedPathDirectionsArray()
+
+    {
+        // reset all 4 places in the array so we can try to make an other path.
+        for (int i = 0; i <4 ; i++)
+        {
+        failedPathDirections[i]=0;
+        }
     }
 
     private void rebuild()
