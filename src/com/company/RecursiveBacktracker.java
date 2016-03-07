@@ -15,12 +15,16 @@ public class RecursiveBacktracker
     int height;
     int currentRowPosition;
     int currentColumnPosition;
+    // count amount of path build
+    int pathBuild;
+    int randomDirection;
 
 
     ArrayList<ArrayList<String>> maze = new ArrayList<ArrayList<String>>();
 
     public RecursiveBacktracker()
     {
+        /*
         // set size
         System.out.println("enter width");
         int width = input.nextInt();
@@ -29,9 +33,11 @@ public class RecursiveBacktracker
         System.out.println("enter height");
         int height = input.nextInt();
         System.out.println("your  height is: " + height);
+        */
+        //CHANGE BACK !!!!!!!!!!!!!!!!!!!!!! to:
+        //setSize(width,height);
+        setSize(30,30);
 
-
-        setSize(width,height);
 
     }
 
@@ -44,23 +50,30 @@ public class RecursiveBacktracker
         this.totalWidth=width+4;
         this.totalHeight=height+4;
 
-        System.out.println(width+height);
+
     }
 
+    // makes a maze.
     public void generateMaze()
     {
         System.out.println(width);
         System.out.println(height);
-        // fill a arraylist. with "W"  (wall)
-
         /*
         steps:
-        1. make a fillid space with a make a barrier
+        1. make a fillid space with a make a barrier and "@"
         */
-        fillMaze();
+        System.out.println("fill maze");
+        fillMaze();// prints maze.
+        System.out.println("make rand start pos");
         makeRandomStartPosition();
+        System.out.println("Print start position");
+        printMaze();
+        System.out.println("find RandDirection  :" + randomDirection);
+
+
         ChooseANewRandomDirection();//
         printMaze();
+
         //rebuild();
         /*
 
@@ -104,66 +117,197 @@ public class RecursiveBacktracker
 
         // go back one step
 
-
-
-
-
-
     }
 
+    // 0 = virker helt
+    // 1 = virker
+    // 2 = no
+
+    // this is the recursive method
     private void ChooseANewRandomDirection()
     {
 
-            int randomDirection = (int)(Math.random() *4 );
-                randomDirection= 0;
-            if(randomDirection == 0)
-            {
-                    System.out.println("up");
-                    // if its already blank
-                    if (maze.get(currentRowPosition-2).get(currentColumnPosition).equals(" ")||
-                            maze.get(currentRowPosition-2).get(currentColumnPosition).equals("#")) {
+                //randomDirection = (int)(Math.random() *2 );
+                //    randomDirection= 0;
+
+                // UP:
+
+        //while (pathBuild<10)
+        //{
+                //Try to build path to the UP, if succes take to steps up
+                if(randomDirection == 0)
+                {
+                        System.out.println("up");
+                        // NO SUCCES.Its already blank, Don't make path!
+                        if (maze.get(currentRowPosition-2).get(currentColumnPosition).equals(" ")||
+                                maze.get(currentRowPosition-2).get(currentColumnPosition).equals("#")) {
+                            // try an other direction
+                            System.out.println("cant take this way up!");
+
+                            //ChooseANewRandomDirection();
+
+                        }
+
+                        // SUCCES! Take to steps UP. Make a path!
+                        else {
+                            // make path
+                            // -2 is because we go up so we have to use an "earlier"creaated aray
+                            // clear path 1. step
+                            maze.get(currentRowPosition-1).set(currentColumnPosition," ");
+
+                            // clear path 2. step
+                            maze.get(currentRowPosition-2).set(currentColumnPosition," ");
+                            System.out.println("make path up to row , column"+ (currentRowPosition-3)+","+(currentColumnPosition-1) );
+
+                            // set new position:
+                            // we move 2 steps up to our new position.
+                            currentRowPosition=currentRowPosition-2;
+                            System.out.println("currentColumnPosition "+currentColumnPosition + " should be as original");
+                            // Column position is not changed!
+                            //test
+                            //randomDirection=3;  //left
+                            pathBuild++;
+                            //ChooseANewRandomDirection();
+                        }
+
+
+
+                }
+
+                // DOWN
+                //Try to build path to the DOWN
+                else if(randomDirection == 1)
+                {
+                    System.out.println("down");
+
+                    // NO SUCCES.Its already blank, Don't make path!
+                    if (maze.get(currentRowPosition+2).get(currentColumnPosition).equals(" ")||
+                            maze.get(currentRowPosition+2).get(currentColumnPosition).equals("#")) {
                         // try an other direction
-                        ChooseANewRandomDirection();
+                        System.out.println("cant take this way down!");
+
+                        // test:
+
+                        //ChooseANewRandomDirection();
+
                     }
 
-                    // there is a wall to smash
+                    // SUCCES! Take to steps DOWN. Make a path!
+                    else {
+                        // make path
+                        // +,1+2 is because we go up so we have to use an "earlier"creaated row
+                        // clear path 1. step
+                        maze.get(currentRowPosition+1).set(currentColumnPosition," ");
+
+                        // clear path 2. step
+                        maze.get(currentRowPosition+2).set(currentColumnPosition," ");
+                        // +3 and +1 is just to get the names right.
+                        System.out.println("make path DOWN to : roww,column("+ (currentRowPosition+3)+","+(currentColumnPosition+1)+")" );
+
+                        // set new position:
+                        // we move 2 steps up to our new position.
+                        // Notice only currentColumnPosition is changed
+                        currentRowPosition=currentRowPosition+2;
+                        System.out.println("currentColumnPosition :"+currentColumnPosition +"currentRowPosition :" + currentRowPosition);
+                        // Row position should not be changed!
+                        pathBuild++;
+                        //ChooseANewRandomDirection();
+                    }
+                }
+
+                // LEFT:
+                //Try to build path to the LEFT
+                else if(randomDirection == 2)
+                {
+                    System.out.println("left");
+
+                    // NO SUCCES.Its already blank or theres the board ends, Don't make path!
+                    if (maze.get(currentRowPosition).get(currentColumnPosition-2).equals(" ")||
+                            maze.get(currentRowPosition).get(currentColumnPosition-2).equals("#"))
+                    {
+                        // try an other direction
+                        System.out.println("cant take this way LEFT!");
+
+                        //ChooseANewRandomDirection();
+
+                    }
+
+                    // Make a path!
                     else {
                         // make path
                         // -2 is because we go up so we have to use an "earlier"creaated aray
                         // clear path 1. step
-                        maze.get(currentRowPosition-1).set(currentColumnPosition," ");
+                        maze.get(currentRowPosition).set(currentColumnPosition-1," ");
 
                         // clear path 2. step
-                        maze.get(currentRowPosition-2).set(currentColumnPosition," ");
-                        System.out.println("make path up to"+ (currentRowPosition-2)+","+(currentColumnPosition-1) );
+                        maze.get(currentRowPosition).set(currentColumnPosition-2," ");
+                        System.out.println("make path LEFT to : ("+ (currentRowPosition-2)+","+(currentColumnPosition-1)+")" );
 
                         // set new position:
                         // we move 2 steps up to our new position.
-                        currentRowPosition=currentRowPosition-2;
-                        // Column position is not changed!
+                        // row position should not be changed! only currentColumnPosition
+                        currentColumnPosition=currentColumnPosition-2;
+                        System.out.println("currentColumnPosition :"+currentColumnPosition +"currentRowPosition :" +currentRowPosition);
+
+                        pathBuild++;
+                        //ChooseANewRandomDirection();
+                    }
+                }
+
+                // RIGHT
+
+
+                else if(randomDirection == 3)
+                {
+                    System.out.println("right");
+                    // NO SUCCES.Its already blank or theres the board ends, Don't make path!
+                    if (maze.get(currentRowPosition).get(currentColumnPosition+2).equals(" ")||
+                            maze.get(currentRowPosition).get(currentColumnPosition+2).equals("#"))
+                    {
+                        // try an other direction
+                        System.out.println("cant take this way LEFT!");
+
+                        //ChooseANewRandomDirection();
+
                     }
 
+                    // Make a path!
+                    else {
+                        // make path
+                        // +2 is because we go 2 to the right so we have to use an the same row
+                        // clear path 1. step
+                        maze.get(currentRowPosition).set(currentColumnPosition+1," ");
 
+                        // clear path 2. step
+                        maze.get(currentRowPosition).set(currentColumnPosition+2," ");
+                        System.out.println("make path RIGHT to : ("+ (currentRowPosition+2)+","+(currentColumnPosition+1)+")" );
 
-            }
-            else if(randomDirection == 1)
-            {
-                System.out.println("down");
-            }
-            else if(randomDirection == 2)
-            {
-                System.out.println("left");
-            }
-            else if(randomDirection == 3)
-            {
-                System.out.println("right");
-            }
-            else
-                System.out.println("error!");
+                        // set new position:
+                        // we move 2 steps up to our new position.
+                        // Column position should not be changed!
+                        currentColumnPosition=currentColumnPosition+2;
+                        System.out.println("currentColumnPosition :"+currentColumnPosition +"currentRowPosition :" +currentRowPosition);
 
+                        pathBuild++;
+                        //ChooseANewRandomDirection();
+                    }
 
+                }
 
+                else
+                {
+                    System.out.println("error!");
+                }
 
+        //}
+        printMaze();
+        System.out.println("previus rand direction " + randomDirection );
+        System.out.println("enter randomDirection");
+        randomDirection = input.nextInt();
+
+        System.out.println("you entered New random direction : " + randomDirection);
+
+        ChooseANewRandomDirection();
 
     }
 
@@ -215,14 +359,16 @@ public class RecursiveBacktracker
         int startColumn = (int)(Math.random() *width )+2;// the higher the number the further right the board you go
 
         // vil være første koordinatet:
-        // startRow=2;
-        //startColumn=2;
+         startRow=15;
+        startColumn=15;
 
         maze.get(startRow).set(startColumn," ");
         // husk
         System.out.println("start position: ("+(startRow-1)+","+(startColumn-1)+")");
         currentRowPosition=startRow;
         currentColumnPosition=startColumn;
+        System.out.println("currentRowPosition  "+currentRowPosition);
+        System.out.println("currentColumnPosition  "+currentColumnPosition);
 
 
 
