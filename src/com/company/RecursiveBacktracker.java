@@ -26,8 +26,11 @@ public class RecursiveBacktracker
     // used by the backtracker.
     int previousRowPosition;
     int previousColumnPosition;
-    boolean haveStartedBacktrackMode;
-    int blockedDirection;
+
+
+    // have to have a start value that is not 0,1,2 0r 3. otherwise a direction will be blocked.
+    int blockedDirection=-1;
+
 
     // if it reaches a deadend make this true
     boolean hasReachedDeadEnd;
@@ -442,12 +445,13 @@ public class RecursiveBacktracker
 
     private void backtracking()
     {
-
-
+        System.out.println("***********BT**********************************************************************************************************");
+        System.out.println("Blocked bactracking; blockedDirection = " + blockedDirection);
         //while(10>BackTrackTestCount)
-        {
-            int backTrackDirection = (int) (Math.random()*4);
-            // START TEST INPUT
+        //{
+            int randomBackTrackDirection = (int) (Math.random()*4);
+        System.out.println("randomBackTrackDirection :  "+randomBackTrackDirection);
+            // SART TEST INPUT
             /*
             System.out.println("currentColumnPosition :" + currentColumnPosition + "currentRowPosition :" + currentRowPosition);
 
@@ -471,17 +475,20 @@ public class RecursiveBacktracker
             // then change the position to that new location.
             if (maze.get(currentRowPosition - 1).get(currentColumnPosition).equals(" ") &&
                     maze.get(currentRowPosition - 2).get(currentColumnPosition).equals(" ")
-                    && backTrackDirection == 0
+                    && randomBackTrackDirection == 0
                     )
             {
                 // if the direction 0 is blocked try an other backtrack direction
-                if(blockedDirection ==0)
+                if(blockedDirection==0)
                 {
                     System.out.println("cant backtrack UP just came from there");
                     backtracking();
                 }
-                else
+
+                // if the road is not blocked, blockedDirection is not 0;
+                else if(blockedDirection!=0)
                 {
+                    System.out.println("ALLOWED TO BACKTRACK UP");
                     // block this direction you just came from
 
                     int blockedRowPosition = currentRowPosition;
@@ -501,14 +508,16 @@ public class RecursiveBacktracker
                     BackTrackTestCount++;
                     //maze.get(currentRowPosition).set(currentColumnPosition, "X");
 
-                    // bloack direction, 0 for up
-                    blockedDirection = 0;
+
+                    // block direction, 0 so we cant go down.
+                    blockedDirection = 1;
 
                     printMaze();
 
                     ChoosePathAndBuild();
                 }
-
+                else
+                    System.out.println("FAIL BACKTRACK");
 
             }
             // blockedDirection !=1  means the path is not blocked.
@@ -518,14 +527,17 @@ public class RecursiveBacktracker
 
             else if (maze.get(currentRowPosition + 1).get(currentColumnPosition).equals(" ") &&
                     maze.get(currentRowPosition + 2).get(currentColumnPosition).equals(" ")
-                    && backTrackDirection == 1
-                    ) {
-                if(blockedDirection ==1)
+                    && randomBackTrackDirection == 1
+                    )
+            {
+                if(blockedDirection == 1)
                 {
                     System.out.println("cant backtrack DOWN just came from there");
                     backtracking();
                 }
-                else {
+                // if the road is not blocked, smame as blockedDirection is not 1;
+                else if(blockedDirection!=1)
+                {
 
                     // change position down the  old road!
                     // set new position:
@@ -540,20 +552,23 @@ public class RecursiveBacktracker
                     printMaze();
                     //System.out.println("you just took one step down, now block down going direction");
 
-                    // block direction , 1 for down
+                    // block direction , 0 for Up.
+                    // this might seem a bit bit tricky remember we have to be able to block the opposite direction of where we came
 
-                    blockedDirection = 1;
-
+                    blockedDirection =0;
+                    System.out.println("we just backtracked one step down now we cant go up.");
                     BackTrackTestCount++;
                     ChoosePathAndBuild();
                 }
+                else
+                    System.out.println("FAIL BACKTRACK");
 
             }
 
             //BACKTRACK LEFT (minus)
             else if (maze.get(currentRowPosition).get(currentColumnPosition - 1).equals(" ") &&
                     maze.get(currentRowPosition).get(currentColumnPosition - 2).equals(" ")
-                    && backTrackDirection == 2
+                    && randomBackTrackDirection == 2
                     )
             {
                 if(blockedDirection ==2)
@@ -561,7 +576,10 @@ public class RecursiveBacktracker
                     System.out.println("cant backtrack LEFT just came from there");
                     backtracking();
                 }
-                else {
+
+                // if the road is not blocked, smame as blockedDirection is not 1;
+                else if(blockedDirection!=2)
+                {
                     // change position down the  old road!
                     // set new position:
                     // we move 2 steps up to our new position.
@@ -575,26 +593,29 @@ public class RecursiveBacktracker
                     //maze.get(currentRowPosition).set(currentColumnPosition, "z");
                     printMaze();
 
-                    // bloack direction, 2 for left
-                    blockedDirection = 2;
+                    // block direction, 3 so we cant go left we just came from left
+                    blockedDirection = 3;
 
                     BackTrackTestCount++;
                     ChoosePathAndBuild();
                 }
+                else
+                    System.out.println("FAIL BACKTRACK");
 
 
             }
             //BACKTRACK RIGHT
             else if (maze.get(currentRowPosition).get(currentColumnPosition + 1).equals(" ") &&
                     maze.get(currentRowPosition).get(currentColumnPosition + 2).equals(" ")
-                    && backTrackDirection == 3)
+                    && randomBackTrackDirection == 3)
             {
                 if(blockedDirection ==3)
                 {
                     System.out.println("cant backtrack right just came from there");
                     backtracking();
                 }
-                else
+                // if the road is not blocked, smame as blockedDirection is not 1;
+                else if(blockedDirection!=3)
                 {
                     // change position down the  old road!
                     // set new position:
@@ -608,12 +629,14 @@ public class RecursiveBacktracker
                     //maze.get(currentRowPosition).set(currentColumnPosition, "A");
                     printMaze();
 
-                    // block direction, 3 for left
-                    blockedDirection = 3;
+                    // block direction, 2 so we cant go right we just came from right
+                    blockedDirection = 2;
 
                     BackTrackTestCount++;
                     ChoosePathAndBuild();
                 }
+                else
+                    System.out.println("FAIL BACKTRACK");
 
             }
             else
@@ -621,12 +644,12 @@ public class RecursiveBacktracker
                 System.out.println("BACK TRACKING trying to find direction randomly. ");
                 backtracking();
             }
-        }
+        //}
 
 
-        System.out.println("no more tries");
+        //System.out.println("no more tries");
         //maze.get(currentRowPosition).set(currentColumnPosition, "A");
-        printMaze();
+        //printMaze();
 
 
 
