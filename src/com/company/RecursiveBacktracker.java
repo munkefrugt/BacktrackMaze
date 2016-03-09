@@ -145,8 +145,8 @@ public class RecursiveBacktracker
     // this is the recursive method
     private void ChoosePathAndBuild()
     {
-
-                //randomDirection = (int)(Math.random() *4 );
+                // coment this line out in test mode.
+                randomDirection = (int)(Math.random() *4 );
                     //randomDirection=0;
 
                 // UP:
@@ -155,13 +155,14 @@ public class RecursiveBacktracker
         {
             printMaze();
             // TEST START
+            /*
             System.out.println("amount pathbuild  :"+pathBuild);
             System.out.println("previus rand direction " + randomDirection );
             System.out.println("enter randomDirection");
             randomDirection = input.nextInt();
 
             System.out.println("you entered New random direction : " + randomDirection);
-
+            */
             // TEST END
 
 
