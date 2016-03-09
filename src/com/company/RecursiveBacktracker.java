@@ -186,9 +186,12 @@ public class RecursiveBacktracker
                                 System.out.println("all directions have failed. start backtracking!");
 
                                 //printMaze();
-                                backtracking();
-                                //reset failedPathDirections array
+
+                                //reset failedPathDirections array,
+                                // because it has to be reset for next time we need try to build a path.
+                                resetFailedPathDirectionsArray();
                                 // activate backtracking
+                                backtracking();
 
                             }
                             else
@@ -227,7 +230,7 @@ public class RecursiveBacktracker
                             //test
                             //randomDirection=3;  //left
                             pathBuild++;
-                            //reset array "failedPathDirections" array
+                            //reset array "failedPathDirections" array set all to 0
                             resetFailedPathDirectionsArray();
 
                             ChoosePathAndBuild();
@@ -254,9 +257,11 @@ public class RecursiveBacktracker
                         {
                             System.out.println("all directions have failed. start backtracking!");
                             //printMaze();
-                            backtracking();
-                            //reset failedPathDirections array
+                            //reset failedPathDirections array,
+                            // because it has to be reset for next time we need try to build a path.
+                            resetFailedPathDirectionsArray();
                             // activate backtracking
+                            backtracking();
 
                         }
                         else
@@ -317,9 +322,11 @@ public class RecursiveBacktracker
                             System.out.println("all directions have failed. start backtracking!");
 
                             //printMaze();
-                            backtracking();
-                            //reset failedPathDirections array
+                            //reset failedPathDirections array,
+                            // because it has to be reset for next time we need try to build a path.
+                            resetFailedPathDirectionsArray();
                             // activate backtracking
+                            backtracking();
 
                         }
                         else
@@ -379,10 +386,11 @@ public class RecursiveBacktracker
                             System.out.println("all directions have failed. start backtracking!");
 
                             //printMaze();
-                            backtracking();
-
-                            // reset failedPathDirections array
+                            //reset failedPathDirections array,
+                            // because it has to be reset for next time we need try to build a path.
+                            resetFailedPathDirectionsArray();
                             // activate backtracking
+                            backtracking();
 
                         }
                         else
