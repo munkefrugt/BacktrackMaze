@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * Created by v on 3/4/16.
+ * Created by Martin Moltke Wozniak on 3/4/16.
  */
 public class RecursiveBacktracker
 {
@@ -87,7 +87,7 @@ public class RecursiveBacktracker
         System.out.println(height);
         /*
         steps:
-        1. make a fillid space with a make a barrier and "@"
+        1. make a fillid space with a make a barrier and "W"
         */
         System.out.println("fill maze");
         fillMaze();// prints maze.
@@ -113,14 +113,24 @@ public class RecursiveBacktracker
     private void ChoosePathAndBuild()
     {
                 // coment this line out in test mode.
-                randomDirection = (int)(Math.random() *4 );
 
 
-        while (pathBuild<(width/2)*(height/2)-1)
-        {
+       // while (pathBuild<(width/2)*(height/2)-1)
+        //{
 
-            //printMaze();
-            // TEST START
+            printMaze();
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        randomDirection = (int)(Math.random()*4);
+
+        System.out.println("randomDirection:  "+ randomDirection);
+
+
+        // TEST START
             /*
             System.out.println("amount pathbuild  :"+pathBuild);
             System.out.println("previus rand direction " + randomDirection );
@@ -141,14 +151,15 @@ public class RecursiveBacktracker
                         //testMode System.out.println("up");
 
                         // NO SUCCES.Its already blank, Don't make path! or its the way you came from when you are backtracking
-                        if (maze.get(currentRowPosition-2).get(currentColumnPosition).equals(" ")||
-                                maze.get(currentRowPosition-2).get(currentColumnPosition).equals("#"))
+                        if (maze.get(currentRowPosition-2).get(currentColumnPosition).equals("0")||
+                                maze.get(currentRowPosition-2).get(currentColumnPosition).equals("¤"))
                         {
                             // try an other direction
                             //testMode    System.out.println("cant take this way up!");
 
                             //if all directions have been tried. start BACK TRACKING!
-                            if(failedPathDirections[0]==1 && failedPathDirections[1]==1 && failedPathDirections[2]==1 && failedPathDirections[3]==1)
+                            if(failedPathDirections[0]==1 && failedPathDirections[1]==1 && failedPathDirections[2]==1 &&
+                                    failedPathDirections[3]==1)
                             {
                                 //testMode System.out.println("all directions have failed. start backtracking!");
 
@@ -179,10 +190,10 @@ public class RecursiveBacktracker
                             // make path
                             // -2 is because we go up so we have to use an "earlier"creaated aray
                             // clear path 1. step
-                            maze.get(currentRowPosition-1).set(currentColumnPosition," ");
+                            maze.get(currentRowPosition-1).set(currentColumnPosition,"0");
 
                             // clear path 2. step
-                            maze.get(currentRowPosition-2).set(currentColumnPosition," ");
+                            maze.get(currentRowPosition-2).set(currentColumnPosition,"0");
                             //testMode System.out.println("make path up to row , column"+ (currentRowPosition-3)+","+(currentColumnPosition-1) );
 
                             // save the position we just came from. will be used in back tracking:
@@ -215,8 +226,8 @@ public class RecursiveBacktracker
                     //testMode System.out.println("down");
 
                     // NO SUCCES.Its already blank, Don't make path!
-                    if (maze.get(currentRowPosition+2).get(currentColumnPosition).equals(" ")||
-                            maze.get(currentRowPosition+2).get(currentColumnPosition).equals("#"))
+                    if (maze.get(currentRowPosition+2).get(currentColumnPosition).equals("0")||
+                            maze.get(currentRowPosition+2).get(currentColumnPosition).equals("¤"))
                     {
                         // try an other direction
                         //testMode System.out.println("cant take this way down!");
@@ -247,10 +258,10 @@ public class RecursiveBacktracker
                         // make path
                         // +,1+2 is because we go up so we have to use an "earlier"creaated row
                         // clear path 1. step
-                        maze.get(currentRowPosition+1).set(currentColumnPosition," ");
+                        maze.get(currentRowPosition+1).set(currentColumnPosition,"0");
 
                         // clear path 2. step
-                        maze.get(currentRowPosition+2).set(currentColumnPosition," ");
+                        maze.get(currentRowPosition+2).set(currentColumnPosition,"0");
                         // +3 and +1 is just to get the names right.
                         //testMode System.out.println("make path DOWN to : roww,column("+ (currentRowPosition+3)+","+(currentColumnPosition+1)+")" );
 
@@ -279,8 +290,8 @@ public class RecursiveBacktracker
                     //testMode System.out.println("left");
 
                     // NO SUCCES.Its already blank or theres the board ends, Don't make path!
-                    if (maze.get(currentRowPosition).get(currentColumnPosition-2).equals(" ")||
-                            maze.get(currentRowPosition).get(currentColumnPosition-2).equals("#"))
+                    if (maze.get(currentRowPosition).get(currentColumnPosition-2).equals("0")||
+                            maze.get(currentRowPosition).get(currentColumnPosition-2).equals("¤"))
                     {
                         // try an other direction
 //testMode                         System.out.println("cant take this way LEFT!");
@@ -294,6 +305,7 @@ public class RecursiveBacktracker
                             // because it has to be reset for next time we need try to build a path.
                             resetFailedPathDirectionsArray();
                             // activate backtracking
+
                             backtracking();
 
                         }
@@ -312,10 +324,10 @@ public class RecursiveBacktracker
                         // make path
                         // -2 is because we go up so we have to use an "earlier"creaated aray
                         // clear path 1. step
-                        maze.get(currentRowPosition).set(currentColumnPosition-1," ");
+                        maze.get(currentRowPosition).set(currentColumnPosition-1,"0");
 
                         // clear path 2. step
-                        maze.get(currentRowPosition).set(currentColumnPosition-2," ");
+                        maze.get(currentRowPosition).set(currentColumnPosition-2,"0");
                         //testMode System.out.println("make path LEFT to : ("+ (currentRowPosition-2)+","+(currentColumnPosition-1)+")" );
 
                         // save the position we just came from. will be used in back tracking: or is it?????????
@@ -343,8 +355,8 @@ public class RecursiveBacktracker
                 {
                     //testMode System.out.println("right");
                     // NO SUCCES.Its already blank or theres the board ends, Don't make path!
-                    if (maze.get(currentRowPosition).get(currentColumnPosition+2).equals(" ")||
-                            maze.get(currentRowPosition).get(currentColumnPosition+2).equals("#"))
+                    if (maze.get(currentRowPosition).get(currentColumnPosition+2).equals("0")||
+                            maze.get(currentRowPosition).get(currentColumnPosition+2).equals("¤"))
                     {
                         // try an other direction
                         //testMode System.out.println("cant take this way right!");
@@ -376,10 +388,10 @@ public class RecursiveBacktracker
                         // make path
                         // +2 is because we go 2 to the right so we have to use an the same row
                         // clear path 1. step
-                        maze.get(currentRowPosition).set(currentColumnPosition+1," ");
+                        maze.get(currentRowPosition).set(currentColumnPosition+1,"0");
 
                         // clear path 2. step
-                        maze.get(currentRowPosition).set(currentColumnPosition+2," ");
+                        maze.get(currentRowPosition).set(currentColumnPosition+2,"0");
                         //testMode              System.out.println("make path RIGHT to : ("+ (currentRowPosition+2)+","+(currentColumnPosition+1)+")" );
 
                         // save the position we just came from. will be used in back tracking:
@@ -411,8 +423,18 @@ public class RecursiveBacktracker
 
 
 
+        //}
+        printMaze();
+        // TESTING
+        System.out.println("sleep");
+        // sleeptest
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
-        //printMaze();
+        System.out.println("4 sec.");
+
         //System.out.println(pathBuild +" path  were build");
 
 
@@ -421,12 +443,22 @@ public class RecursiveBacktracker
 
     private void backtracking()
     {
+        System.out.println("Backtracking");
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
         //testMode  System.out.println("***********BT**********************************************************************************************************");
         //testMode System.out.println("Blocked bactracking; blockedDirection = " + blockedDirection);
         //while(10>BackTrackTestCount)
         //{
             int randomBackTrackDirection = (int) (Math.random()*4);
-        //testMode System.out.println("randomBackTrackDirection :  "+randomBackTrackDirection);
+
+
+            //testMode System.out.println("randomBackTrackDirection :  "+randomBackTrackDirection);
             // SART TEST INPUT
             /*
             System.out.println("currentColumnPosition :" + currentColumnPosition + "currentRowPosition :" + currentRowPosition);
@@ -449,8 +481,8 @@ public class RecursiveBacktracker
             //try Up 2 blank road steps.
             //if there are to blank road steps up and we dident just come from that direction
             // then change the position to that new location.
-            if (maze.get(currentRowPosition - 1).get(currentColumnPosition).equals(" ") &&
-                    maze.get(currentRowPosition - 2).get(currentColumnPosition).equals(" ")
+            if (maze.get(currentRowPosition - 1).get(currentColumnPosition).equals("0") &&
+                    maze.get(currentRowPosition - 2).get(currentColumnPosition).equals("0")
                     && randomBackTrackDirection == 0
                     )
             {
@@ -498,8 +530,8 @@ public class RecursiveBacktracker
             //BACKTRACK DOWN
 
 
-            else if (maze.get(currentRowPosition + 1).get(currentColumnPosition).equals(" ") &&
-                    maze.get(currentRowPosition + 2).get(currentColumnPosition).equals(" ")
+            else if (maze.get(currentRowPosition + 1).get(currentColumnPosition).equals("0") &&
+                    maze.get(currentRowPosition + 2).get(currentColumnPosition).equals("0")
                     && randomBackTrackDirection == 1
                     )
             {
@@ -539,8 +571,8 @@ public class RecursiveBacktracker
             }
 
             //BACKTRACK LEFT (minus)
-            else if (maze.get(currentRowPosition).get(currentColumnPosition - 1).equals(" ") &&
-                    maze.get(currentRowPosition).get(currentColumnPosition - 2).equals(" ")
+            else if (maze.get(currentRowPosition).get(currentColumnPosition - 1).equals("0") &&
+                    maze.get(currentRowPosition).get(currentColumnPosition - 2).equals("0")
                     && randomBackTrackDirection == 2
                     )
             {
@@ -578,8 +610,8 @@ public class RecursiveBacktracker
 
             }
             //BACKTRACK RIGHT
-            else if (maze.get(currentRowPosition).get(currentColumnPosition + 1).equals(" ") &&
-                    maze.get(currentRowPosition).get(currentColumnPosition + 2).equals(" ")
+            else if (maze.get(currentRowPosition).get(currentColumnPosition + 1).equals("0") &&
+                    maze.get(currentRowPosition).get(currentColumnPosition + 2).equals("0")
                     && randomBackTrackDirection == 3)
             {
                 if(blockedDirection ==3)
@@ -675,8 +707,6 @@ public class RecursiveBacktracker
                 System.err.println("IndexOutOfBoundsException: " + e.getMessage());
                 rebuild();
             }
-
-
     }
 
     private void makeRandomStartPosition()
@@ -688,10 +718,10 @@ public class RecursiveBacktracker
         int startColumn = (int)(Math.random() *width )+2;// the higher the number the further right the board you go
 
         // vil være første koordinatet:
-         startRow=2;
-        startColumn=2;
+        // startRow=2;
+        //startColumn=2;
 
-        maze.get(startRow).set(startColumn," ");
+        maze.get(startRow).set(startColumn,"0");
         // husk
         System.out.println("start position: ("+(startRow-1)+","+(startColumn-1)+")");
         currentRowPosition=startRow;
@@ -722,13 +752,14 @@ public class RecursiveBacktracker
 
     }
 
+
     public void fillMaze()
     {
 
         ArrayList<String> border = new ArrayList<String>();
         for (int j = 0; j <totalWidth ; j++)
         {
-            border.add("#");
+            border.add("¤");
 
         }
         maze.add(border);
@@ -737,17 +768,16 @@ public class RecursiveBacktracker
         for (int i = 0; i < height ; i++)
         {
 
-
             ArrayList<String> list = new ArrayList<String>();
-            list.add("#");
-            list.add("#");
+            list.add("¤");
+            list.add("¤");
             for (int j = 0; j <width ; j++)
             {
-                list.add("@");
+                list.add("W");
 
             }
-            list.add("#");
-            list.add("#");
+            list.add("¤");
+            list.add("¤");
             maze.add(list);
         }
 

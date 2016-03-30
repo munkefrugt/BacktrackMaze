@@ -1,7 +1,7 @@
 package com.company;
 
 /**
- * Created by v on 3/4/16.
+ * Created by  Created by Martin Moltke Wozniak on 3/4/16.
  */
 public class Main
 {
