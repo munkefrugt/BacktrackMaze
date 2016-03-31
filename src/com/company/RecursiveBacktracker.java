@@ -112,6 +112,10 @@ public class RecursiveBacktracker
     // this is the recursive method
     private void ChoosePathAndBuild()
     {
+
+        System.out.println("currentColumnPosition : " + currentColumnPosition);
+        System.out.println("currentRowPosition : " + currentRowPosition);
+
                 // coment this line out in test mode.
 
 
@@ -145,14 +149,25 @@ public class RecursiveBacktracker
 
 
 
-                //Try to build path to the UP, if succes take to steps up
+                //Try to build path  UP, if succes take 2 steps up
                 if(randomDirection == 0)
                 {
                         //testMode System.out.println("up");
 
-                        // NO SUCCES.Its already blank, Don't make path! or its the way you came from when you are backtracking
+
+
+                        // NO SUCCES.
+                        // Its already blank, or there is a path, or a border, Don't make path!
                         if (maze.get(currentRowPosition-2).get(currentColumnPosition).equals("0")||
-                                maze.get(currentRowPosition-2).get(currentColumnPosition).equals("¤"))
+                                maze.get(currentRowPosition-2).get(currentColumnPosition).equals("¤") ||
+                                maze.get(currentRowPosition-2).get(currentColumnPosition).equals(" ")/*||
+
+                                (
+                                        maze.get(currentRowPosition-1).get(currentColumnPosition).equals(" ")
+                                                &&
+                                                maze.get(currentRowPosition-2).get(currentColumnPosition).equals(" ")
+                                )*/
+                            )
                         {
                             // try an other direction
                             //testMode    System.out.println("cant take this way up!");
@@ -186,7 +201,10 @@ public class RecursiveBacktracker
 
                         // SUCCES! Take to steps UP. Make a path!
 
-                        else {
+                        // if the next position in the ext 2 step above is equal to a wall piece. then make a path.
+                        else// if (maze.get(currentRowPosition -1).get(currentColumnPosition).equals("+")
+                            //    && maze.get(currentRowPosition -2).get(currentColumnPosition).equals("+") )
+                        {
                             // make path
                             // -2 is because we go up so we have to use an "earlier"creaated aray
                             // clear path 1. step
@@ -200,6 +218,8 @@ public class RecursiveBacktracker
                             // Set  previous position to current:
                             previousRowPosition = currentRowPosition;
                             previousColumnPosition= currentColumnPosition;
+
+
 
                             // set new position:
                             // we move 2 steps up to our new position.
@@ -227,7 +247,14 @@ public class RecursiveBacktracker
 
                     // NO SUCCES.Its already blank, Don't make path!
                     if (maze.get(currentRowPosition+2).get(currentColumnPosition).equals("0")||
-                            maze.get(currentRowPosition+2).get(currentColumnPosition).equals("¤"))
+                            maze.get(currentRowPosition+2).get(currentColumnPosition).equals("¤") ||
+                            maze.get(currentRowPosition+2).get(currentColumnPosition).equals(" ")||
+                            (
+                                    maze.get(currentRowPosition+1).get(currentColumnPosition).equals(" ")
+                                    &&
+                                    maze.get(currentRowPosition+2).get(currentColumnPosition).equals(" ")
+                            )
+                        )
                     {
                         // try an other direction
                         //testMode System.out.println("cant take this way down!");
@@ -254,7 +281,11 @@ public class RecursiveBacktracker
                     }
 
                     // SUCCES! Take to steps DOWN. Make a path!
-                    else {
+                    // if there is already a wall.
+                    else // if (maze.get(currentRowPosition +1).get(currentColumnPosition).equals("+")
+                         //   && maze.get(currentRowPosition +2).get(currentColumnPosition).equals("+") )
+
+                    {
                         // make path
                         // +,1+2 is because we go up so we have to use an "earlier"creaated row
                         // clear path 1. step
@@ -289,9 +320,24 @@ public class RecursiveBacktracker
                 {
                     //testMode System.out.println("left");
 
-                    // NO SUCCES.Its already blank or theres the board ends, Don't make path!
-                    if (maze.get(currentRowPosition).get(currentColumnPosition-2).equals("0")||
-                            maze.get(currentRowPosition).get(currentColumnPosition-2).equals("¤"))
+                    // NO SUCCES.Its already 2 blank or theres the board ends or there is a path already,
+                    // then Don't make path! just backtrack
+                    if (
+                            maze.get(currentRowPosition).get(currentColumnPosition-2).equals("0") ||
+                                    maze.get(currentRowPosition).get(currentColumnPosition-2).equals("¤") ||
+
+                                    maze.get(currentRowPosition).get(currentColumnPosition-2).equals("0")||
+
+
+                                    // and if there are already 2 blanck pieces.
+                                    (
+                                            maze.get(currentRowPosition).get(currentColumnPosition-1).equals(" ") &&
+                                                    maze.get(currentRowPosition).get(currentColumnPosition-2).equals(" ")
+
+                                    )
+                            )
+
+
                     {
                         // try an other direction
 //testMode                         System.out.println("cant take this way LEFT!");
@@ -319,8 +365,10 @@ public class RecursiveBacktracker
 
                     }
 
-                    // Make a path!
-                    else {
+                    // SUCCES Make a path! LEFT
+                    else //if (maze.get(currentRowPosition).get(currentColumnPosition-1).equals("+")&&
+                         //   maze.get(currentRowPosition).get(currentColumnPosition-2).equals("+"))
+                    {
                         // make path
                         // -2 is because we go up so we have to use an "earlier"creaated aray
                         // clear path 1. step
@@ -348,15 +396,27 @@ public class RecursiveBacktracker
                     }
                 }
 
-                // RIGHT
 
+
+                // RIGHT
 
                 else if(randomDirection == 3)
                 {
                     //testMode System.out.println("right");
-                    // NO SUCCES.Its already blank or theres the board ends, Don't make path!
-                    if (maze.get(currentRowPosition).get(currentColumnPosition+2).equals("0")||
-                            maze.get(currentRowPosition).get(currentColumnPosition+2).equals("¤"))
+
+                    // NO SUCCES.Its already 2 blank or theres the board ends or there is a path already,
+                    // then Don't make path! just backtrack
+                    if (
+                            maze.get(currentRowPosition).get(currentColumnPosition+2).equals("0") ||
+                            maze.get(currentRowPosition).get(currentColumnPosition+2).equals("¤") ||
+                                    maze.get(currentRowPosition).get(currentColumnPosition+2).equals(" ") ||
+                                   // and if there are already 2 blanck pieces.
+                                   (
+                                       maze.get(currentRowPosition).get(currentColumnPosition+1).equals(" ") &&
+                                        maze.get(currentRowPosition).get(currentColumnPosition+2).equals(" ")
+
+                                   )
+                            )
                     {
                         // try an other direction
                         //testMode System.out.println("cant take this way right!");
@@ -375,7 +435,7 @@ public class RecursiveBacktracker
                         }
                         else
                         {
-//testMode                             System.out.println("try an other direction");
+
                             // tell the "failedPathDirections" array that the path couldent be made.
                             failedPathDirections[3]=1;
                             ChoosePathAndBuild();
@@ -383,8 +443,10 @@ public class RecursiveBacktracker
 
                     }
 
-                    // Make a path!
-                    else {
+                    // SUCCES Make a path! Right
+                    else //if (maze.get(currentRowPosition).get(currentColumnPosition+1).equals("+")&&
+                         //   maze.get(currentRowPosition).get(currentColumnPosition+2).equals("+"))
+                    {
                         // make path
                         // +2 is because we go 2 to the right so we have to use an the same row
                         // clear path 1. step
@@ -415,7 +477,7 @@ public class RecursiveBacktracker
 
                 else
                 {
-                    //testMode          System.out.println("error!");
+                    System.out.println("error in ChoosePathAndBuild()!");
                     ChoosePathAndBuild();
                 }
 
@@ -426,7 +488,7 @@ public class RecursiveBacktracker
         //}
         printMaze();
         // TESTING
-        System.out.println("sleep");
+        System.out.println("sleep ! end of choose path methode");
         // sleeptest
         try {
             Thread.sleep(100);
@@ -442,7 +504,20 @@ public class RecursiveBacktracker
     }
 
     private void backtracking()
-    {
+    {   // follow the path back again.
+        // for each time there is a path its marked with "p"
+        // what happens in sudo code:
+
+            //1. see if there are a path of 2 steps where there is marked with p
+                //if yes
+                    //change this path to "d" for done.
+                    // and now go and check again if you can make a new path in wall.->
+                    // ChoosePathAndBuild();
+
+
+        System.out.println("currentColumnPosition : " + currentColumnPosition);
+        System.out.println("currentRowPosition : " + currentRowPosition);
+
         System.out.println("Backtracking");
         try {
             Thread.sleep(100);
@@ -471,16 +546,17 @@ public class RecursiveBacktracker
             */
             // TEST END
 
-            //Is there any blank road i can walk down?
 
+            //Is there any "p"  road i can walk on?
 
             // walk the old path and try each new old step to make a path.
 
 
             // BACKTRACK UP (minus)
             //try Up 2 blank road steps.
-            //if there are to blank road steps up and we dident just come from that direction
+            //if there are 2 "p" road steps up and we dident just come from that direction
             // then change the position to that new location.
+                //(-1), is for seeing the position 1 step above, and (-2) is to see 2 steps above.
             if (maze.get(currentRowPosition - 1).get(currentColumnPosition).equals("0") &&
                     maze.get(currentRowPosition - 2).get(currentColumnPosition).equals("0")
                     && randomBackTrackDirection == 0
@@ -496,10 +572,19 @@ public class RecursiveBacktracker
                 // if the road is not blocked, blockedDirection is not 0;
                 else if(blockedDirection!=0)
                 {
-                    //testMode System.out.println("ALLOWED TO BACKTRACK UP");
+                    //testMode
+                    System.out.println("BACKTRACK UP");
                     // block this direction you just came from
 
 
+                    // Change the path "p" to blank " "
+
+                    maze.get(currentRowPosition).set(currentColumnPosition," ");
+                    // clear path 1. step
+                    maze.get(currentRowPosition - 1).set(currentColumnPosition," ");
+                    // clear path 2. step
+                    maze.get(currentRowPosition - 2).set(currentColumnPosition," ");
+                    printMaze();
 
                     // change position up the  old road!
 
@@ -518,6 +603,10 @@ public class RecursiveBacktracker
                     blockedDirection = 1;
 
                     //printMaze();
+
+
+
+
 
                     ChoosePathAndBuild();
                 }
@@ -543,7 +632,17 @@ public class RecursiveBacktracker
                 // if the road is not blocked, smame as blockedDirection is not 1;
                 else if(blockedDirection!=1)
                 {
+                    System.out.println("backtrack down");
 
+
+                    System.out.println("currentColumnPosition : " + currentColumnPosition);
+                    System.out.println("currentRowPosition : " + currentRowPosition);
+
+
+                    maze.get(currentRowPosition).set(currentColumnPosition," ");
+                    maze.get(currentRowPosition + 1).set(currentColumnPosition," ");
+                    maze.get(currentRowPosition + 2).set(currentColumnPosition," ");
+                    printMaze();
                     // change position down the  old road!
                     // set new position:
                     // we move 2 steps up to our new position.
@@ -585,6 +684,16 @@ public class RecursiveBacktracker
                 // if the road is not blocked, smame as blockedDirection is not 1;
                 else if(blockedDirection!=2)
                 {
+                    System.out.println("backtrack left");
+                    // change p to " "
+
+
+                    maze.get(currentRowPosition).set(currentColumnPosition," ");
+                    maze.get(currentRowPosition).set(currentColumnPosition - 1," ");
+                    maze.get(currentRowPosition).set(currentColumnPosition - 2," ");
+                    printMaze();
+
+
                     // change position down the  old road!
                     // set new position:
                     // we move 2 steps up to our new position.
@@ -622,6 +731,12 @@ public class RecursiveBacktracker
                 // if the road is not blocked, smame as blockedDirection is not 1;
                 else if(blockedDirection!=3)
                 {
+                    System.out.println("backtrack right");
+
+                    maze.get(currentRowPosition).set(currentColumnPosition," ");
+                    maze.get(currentRowPosition).set(currentColumnPosition + 1," ");
+                    maze.get(currentRowPosition).set(currentColumnPosition + 2," ");
+                    printMaze();
                     // change position down the  old road!
                     // set new position:
                     // we move 2 steps up to our new position.
@@ -773,7 +888,7 @@ public class RecursiveBacktracker
             list.add("¤");
             for (int j = 0; j <width ; j++)
             {
-                list.add("W");
+                list.add("+");
 
             }
             list.add("¤");
