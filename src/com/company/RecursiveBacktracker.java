@@ -179,7 +179,7 @@ public class RecursiveBacktracker
                             //if all directions have been tried. start BACK TRACKING!
                             if(failedPathDirections[0]==1 && failedPathDirections[1]==1 && failedPathDirections[2]==1 &&
                                     failedPathDirections[3]==1)
-                            {
+                            {  
                                 //testMode System.out.println("all directions have failed. start backtracking!");
 
                                 //printMaze();
