@@ -160,13 +160,13 @@ public class RecursiveBacktracker
                         // Its already blank, or there is a path, or a border, Don't make path!
                         if (maze.get(currentRowPosition-2).get(currentColumnPosition).equals("0")||
                                 maze.get(currentRowPosition-2).get(currentColumnPosition).equals("¤") ||
-                                maze.get(currentRowPosition-2).get(currentColumnPosition).equals(" ")/*||
+                                maze.get(currentRowPosition-2).get(currentColumnPosition).equals(" ")||
 
                                 (
                                         maze.get(currentRowPosition-1).get(currentColumnPosition).equals(" ")
                                                 &&
                                                 maze.get(currentRowPosition-2).get(currentColumnPosition).equals(" ")
-                                )*/
+                                )
                             )
                         {
                             // try an other direction
@@ -326,7 +326,7 @@ public class RecursiveBacktracker
                             maze.get(currentRowPosition).get(currentColumnPosition-2).equals("0") ||
                                     maze.get(currentRowPosition).get(currentColumnPosition-2).equals("¤") ||
 
-                                    maze.get(currentRowPosition).get(currentColumnPosition-2).equals("0")||
+                                    maze.get(currentRowPosition).get(currentColumnPosition-2).equals(" ")||
 
 
                                     // and if there are already 2 blanck pieces.
@@ -531,6 +531,7 @@ public class RecursiveBacktracker
         //while(10>BackTrackTestCount)
         //{
             int randomBackTrackDirection = (int) (Math.random()*4);
+        System.out.println("random backtrack direction : " + randomBackTrackDirection);
 
 
             //testMode System.out.println("randomBackTrackDirection :  "+randomBackTrackDirection);
@@ -552,7 +553,7 @@ public class RecursiveBacktracker
             // walk the old path and try each new old step to make a path.
 
 
-            // BACKTRACK UP (minus)
+            // BACKTRACK UP  (0) // to go up to the next array -1,-2 are needed.
             //try Up 2 blank road steps.
             //if there are 2 "p" road steps up and we dident just come from that direction
             // then change the position to that new location.
@@ -565,7 +566,8 @@ public class RecursiveBacktracker
                 // if the direction 0 is blocked try an other backtrack direction
                 if(blockedDirection==0)
                 {
-                    //testMode  System.out.println("cant backtrack UP just came from there");
+                    //testMode
+                    System.out.println("cant backtrack UP just came from there");
                     backtracking();
                 }
 
@@ -583,7 +585,7 @@ public class RecursiveBacktracker
                     // clear path 1. step
                     maze.get(currentRowPosition - 1).set(currentColumnPosition," ");
                     // clear path 2. step
-                    maze.get(currentRowPosition - 2).set(currentColumnPosition," ");
+                    //maze.get(currentRowPosition - 2).set(currentColumnPosition," ");
                     printMaze();
 
                     // change position up the  old road!
@@ -616,6 +618,8 @@ public class RecursiveBacktracker
             }
             // blockedDirection !=1  means the path is not blocked.
 
+
+
             //BACKTRACK DOWN
 
 
@@ -626,7 +630,8 @@ public class RecursiveBacktracker
             {
                 if(blockedDirection == 1)
                 {
-                    //testMode System.out.println("cant backtrack DOWN just came from there");
+                    //testMode
+                    System.out.println("cant backtrack DOWN just came from there");
                     backtracking();
                 }
                 // if the road is not blocked, smame as blockedDirection is not 1;
@@ -641,7 +646,7 @@ public class RecursiveBacktracker
 
                     maze.get(currentRowPosition).set(currentColumnPosition," ");
                     maze.get(currentRowPosition + 1).set(currentColumnPosition," ");
-                    maze.get(currentRowPosition + 2).set(currentColumnPosition," ");
+                    //maze.get(currentRowPosition + 2).set(currentColumnPosition," ");
                     printMaze();
                     // change position down the  old road!
                     // set new position:
@@ -677,7 +682,8 @@ public class RecursiveBacktracker
             {
                 if(blockedDirection ==2)
                 {
-                    //testMode System.out.println("cant backtrack LEFT just came from there");
+                    //testMode
+                    System.out.println("cant backtrack LEFT just came from there");
                     backtracking();
                 }
 
@@ -690,7 +696,7 @@ public class RecursiveBacktracker
 
                     maze.get(currentRowPosition).set(currentColumnPosition," ");
                     maze.get(currentRowPosition).set(currentColumnPosition - 1," ");
-                    maze.get(currentRowPosition).set(currentColumnPosition - 2," ");
+                    //maze.get(currentRowPosition).set(currentColumnPosition - 2," ");
                     printMaze();
 
 
@@ -725,7 +731,8 @@ public class RecursiveBacktracker
             {
                 if(blockedDirection ==3)
                 {
-                    //testMode System.out.println("cant backtrack right just came from there");
+                    //testMode
+                    System.out.println("cant backtrack right just came from there");
                     backtracking();
                 }
                 // if the road is not blocked, smame as blockedDirection is not 1;
@@ -735,7 +742,7 @@ public class RecursiveBacktracker
 
                     maze.get(currentRowPosition).set(currentColumnPosition," ");
                     maze.get(currentRowPosition).set(currentColumnPosition + 1," ");
-                    maze.get(currentRowPosition).set(currentColumnPosition + 2," ");
+                    //maze.get(currentRowPosition).set(currentColumnPosition + 2," ");
                     printMaze();
                     // change position down the  old road!
                     // set new position:
@@ -761,7 +768,8 @@ public class RecursiveBacktracker
             }
             else
             {
-                //testMode System.out.println("BACK TRACKING trying to find direction randomly. ");
+                //testMode
+                System.out.println("BACK TRACKING trying to find New direction randomly. ");
                 backtracking();
             }
         //}
