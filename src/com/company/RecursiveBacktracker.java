@@ -729,6 +729,7 @@ public class RecursiveBacktracker
                     maze.get(currentRowPosition).get(currentColumnPosition + 2).equals("0")
                     && randomBackTrackDirection == 3)
             {
+                
                 if(blockedDirection ==3)
                 {
                     //testMode
