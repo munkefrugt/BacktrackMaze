@@ -179,7 +179,7 @@ public class RecursiveBacktracker
                             //if all directions have been tried. start BACK TRACKING!
                             if(failedPathDirections[0]==1 && failedPathDirections[1]==1 && failedPathDirections[2]==1 &&
                                     failedPathDirections[3]==1)
-                            {  
+                            {
                                 //testMode System.out.println("all directions have failed. start backtracking!");
 
                                 //printMaze();
@@ -574,16 +574,16 @@ public class RecursiveBacktracker
                     )
             {
                 // if the direction 0 is blocked try an other backtrack direction
-                if(blockedDirection==0)
+                /*if(blockedDirection==0)
                 {
                     //testMode
                     System.out.println("cant backtrack UP just came from there");
                     backtracking();
-                }
+                }*/
 
                 // if the road is not blocked, blockedDirection is not 0;
-                else if(blockedDirection!=0)
-                {
+                /*else if(blockedDirection!=0)
+                {*/
                     //testMode
                     System.out.println("BACKTRACK UP");
                     // block this direction you just came from
@@ -621,9 +621,9 @@ public class RecursiveBacktracker
 
 
                     ChoosePathAndBuild();
-                }
+                /*}
                 else
-                 System.out.println("FAIL BACKTRACK");
+                 System.out.println("FAIL BACKTRACK");*/
 
             }
             // blockedDirection !=1  means the path is not blocked.
