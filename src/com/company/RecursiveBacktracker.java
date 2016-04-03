@@ -23,9 +23,12 @@ public class RecursiveBacktracker
     // this will start backtraking is they are all one
     int failedPathDirections[] = {0,0,0,0,};
 
+
+
     // if there has been made a try to backtrack and it failed change the index from  0->1
     // the index 0 = up, 1= down,2=left, 3=right.
     // this will start make the last 0 into a blank space. (" ")
+    // when they are all 1. go out off the algorithm and start the rest of the program.
     int failedBackTrackingDirections[] ={0,0,0,0};
 
     int previousRowPosition;
@@ -41,6 +44,10 @@ public class RecursiveBacktracker
     int BackTrackTestCount;
 
     ArrayList<ArrayList<String>> maze = new ArrayList<ArrayList<String>>();
+
+    // count each piece of path that have been created, added or subtracted. when path count is 0 and theres no where to
+    // go the loop breaks.
+    int pathCount;
 
     public RecursiveBacktracker()
     {
@@ -120,11 +127,7 @@ public class RecursiveBacktracker
         System.out.println("currentColumnPosition : " + currentColumnPosition);
         System.out.println("currentRowPosition : " + currentRowPosition);
 
-                // coment this line out in test mode.
 
-
-       // while (pathBuild<(width/2)*(height/2)-1)
-        //{
 
             printMaze();
         try {
@@ -180,15 +183,26 @@ public class RecursiveBacktracker
                             if(failedPathDirections[0]==1 && failedPathDirections[1]==1 && failedPathDirections[2]==1 &&
                                     failedPathDirections[3]==1)
                             {
-                                //testMode System.out.println("all directions have failed. start backtracking!");
+                                // if pathcount equals 1;
+                                // then break recursion loop
+                                if (pathCount==1)
+                                {
+                                    // end recursion
+                                    System.out.println("end recursion-break.");
+                                }
 
-                                //printMaze();
+                                else
+                                {
+                                    //testMode System.out.println("all directions have failed. start backtracking!");
 
-                                //reset failedPathDirections array,
-                                // because it has to be reset for next time we need try to build a path.
-                                resetFailedPathDirectionsArray();
-                                // activate backtracking
-                                backtracking();
+                                    //printMaze();
+
+                                    //reset failedPathDirections array,
+                                    // because it has to be reset for next time we need try to build a path.
+                                    resetFailedPathDirectionsArray();
+                                    // activate backtracking
+                                    backtracking();
+                                }
 
                             }
                             else
@@ -197,6 +211,10 @@ public class RecursiveBacktracker
 
                             // tell the "failedPathDirections" array that the path couldent be made.
                             failedPathDirections[0]=1;
+
+
+
+
                             ChoosePathAndBuild();
                             }
 
@@ -279,6 +297,7 @@ public class RecursiveBacktracker
                             //testMode System.out.println("try an other direction");
                             // tell the "failedPathDirections" array that the path couldent be made.
                             failedPathDirections[1]=1;
+
                             ChoosePathAndBuild();
                         }
 
@@ -562,13 +581,23 @@ public class RecursiveBacktracker
 
             // walk the old path and try each new old step to make a path.
 
+            // for breaking out of the recursion loop
+            if (failedBackTrackingDirections[0]==1 &&
+                failedBackTrackingDirections[1]==1 &&
+                failedBackTrackingDirections[2]==1 &&
+                failedBackTrackingDirections[3]==1
+                    )
+            {
+                // end recursive loop.
+                System.out.println("End recursion..");
+            }
 
             // BACKTRACK UP  (0) // to go up to the next array -1,-2 are needed.
             //try Up 2 blank road steps.
             //if there are 2 "p" road steps up and we dident just come from that direction
             // then change the position to that new location.
                 //(-1), is for seeing the position 1 step above, and (-2) is to see 2 steps above.
-            if (maze.get(currentRowPosition - 1).get(currentColumnPosition).equals("0") &&
+            else if (maze.get(currentRowPosition - 1).get(currentColumnPosition).equals("0") &&
                     maze.get(currentRowPosition - 2).get(currentColumnPosition).equals("0")
                     && randomBackTrackDirection == 0
                     )
@@ -578,11 +607,13 @@ public class RecursiveBacktracker
                 {
                     //testMode
                     System.out.println("cant backtrack UP just came from there");
+                    // when all 4 idex's are changed to 1, we stop backtracking.
+                    failedBackTrackingDirections[0]=1;
                     backtracking();
-                }*/
+                }
 
                 // if the road is not blocked, blockedDirection is not 0;
-                /*else if(blockedDirection!=0)
+                else if(blockedDirection!=0)
                 {*/
                     //testMode
                     System.out.println("BACKTRACK UP");
@@ -596,6 +627,7 @@ public class RecursiveBacktracker
                     maze.get(currentRowPosition - 1).set(currentColumnPosition," ");
                     // clear path 2. step
                     //maze.get(currentRowPosition - 2).set(currentColumnPosition," ");
+
                     printMaze();
 
                     // change position up the  old road!
@@ -618,12 +650,13 @@ public class RecursiveBacktracker
 
 
 
-
+                    resetfailedBackTrackingDirections();
 
                     ChoosePathAndBuild();
                 /*}
                 else
-                 System.out.println("FAIL BACKTRACK");*/
+                 System.out.println("FAIL BACKTRACK");
+                */
 
             }
             // blockedDirection !=1  means the path is not blocked.
@@ -642,6 +675,9 @@ public class RecursiveBacktracker
                 {
                     //testMode
                     System.out.println("cant backtrack DOWN just came from there");
+                    // when all 4 idex's are changed to 1, we stop backtracking.
+                    System.out.println("index 1 = 1");
+                    failedBackTrackingDirections[1]=1;
                     backtracking();
                 }
                 // if the road is not blocked, smame as blockedDirection is not 1;
@@ -677,6 +713,7 @@ public class RecursiveBacktracker
                     blockedDirection =0;
                     //testMode System.out.println("we just backtracked one step down now we cant go up.");
                     BackTrackTestCount++;
+                    resetfailedBackTrackingDirections();
                     ChoosePathAndBuild();
                 /*}
                 else
@@ -694,6 +731,8 @@ public class RecursiveBacktracker
                 {
                     //testMode
                     System.out.println("cant backtrack LEFT just came from there");
+                    // when all 4 idex's are changed to 1, we stop backtracking.
+                    failedBackTrackingDirections[2]=1;
                     backtracking();
                 }
 
@@ -727,6 +766,7 @@ public class RecursiveBacktracker
                     blockedDirection = 3;
 
                     BackTrackTestCount++;
+                    resetfailedBackTrackingDirections();
                     ChoosePathAndBuild();
                 /*}
                 else
@@ -734,6 +774,8 @@ public class RecursiveBacktracker
                 */
 
             }
+
+
             //BACKTRACK RIGHT
             else if (maze.get(currentRowPosition).get(currentColumnPosition + 1).equals("0") &&
                     maze.get(currentRowPosition).get(currentColumnPosition + 2).equals("0")
@@ -743,7 +785,10 @@ public class RecursiveBacktracker
                 /*if(blockedDirection ==3)
                 {
                     //testMode
-                    System.out.println("cant backtrack right just came from there");
+                    System.out.println("cant backtrack right its blank , - failedBackTrackingDirections[0]=1");
+                    // when all 4 idex's are changed to 1, we stop backtracking.
+                    failedBackTrackingDirections[0]=1;
+
                     backtracking();
                 }
                 // if the road is not blocked, smame as blockedDirection is not 1;
@@ -771,6 +816,7 @@ public class RecursiveBacktracker
                     blockedDirection = 2;
 
                     BackTrackTestCount++;
+                    resetfailedBackTrackingDirections();
                     ChoosePathAndBuild();
                 /*}
                 else
@@ -781,6 +827,8 @@ public class RecursiveBacktracker
             {
                 //testMode
                 System.out.println("BACK TRACKING trying to find New direction randomly. ");
+                System.out.println("failedBackTrackingDirections  :"+failedBackTrackingDirections[0]+failedBackTrackingDirections[1]+
+                        failedBackTrackingDirections[2]+failedPathDirections[3]);
                 backtracking();
             }
         //}
@@ -794,6 +842,15 @@ public class RecursiveBacktracker
 
 
 
+    }
+
+    private void resetfailedBackTrackingDirections()
+    {
+        // reset all 4 places in the array so we can do a new backtracing
+        for (int i = 0; i <4 ; i++)
+        {
+            failedBackTrackingDirections[i]=0;
+        }
     }
 
     private void resetFailedPathDirectionsArray()
