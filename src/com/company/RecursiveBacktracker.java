@@ -112,10 +112,35 @@ public class RecursiveBacktracker
         ChoosePathAndBuild();// chose a path randomly and try to make a path.
 
         insertMinotaur();
+        makeEntranceAndExitInBorders();
 
         System.out.println("END*******************************************************************************");
 
         printMaze();
+
+
+    }
+
+    private void makeEntranceAndExitInBorders()
+    {
+        System.out.println("hi");
+        // make entrance
+        int randomRowForEntrance =((int) (Math.random()* (height-2))+2);
+
+
+        maze.get(randomRowForEntrance).set(0,"@");
+        maze.get(randomRowForEntrance).set(1,"S");
+        maze.get(randomRowForEntrance).set(2," ");
+
+
+        int randomRowForExit =((int) (Math.random()* (height-2))+2);
+        System.out.println("randomRowForEntrance "+ randomRowForEntrance);
+        System.out.println("randomRowForExit"+randomRowForExit);
+
+        maze.get(randomRowForExit).set(totalWidth-1,"@");
+        maze.get(randomRowForExit).set(totalWidth-2,"F");
+        maze.get(randomRowForExit).set(totalWidth-3," ");
+
 
 
     }
