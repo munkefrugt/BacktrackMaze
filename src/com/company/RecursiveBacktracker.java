@@ -156,11 +156,11 @@ public class RecursiveBacktracker
 
 
             printMaze();
-            try {
-                Thread.sleep(10);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            //try {
+            //    Thread.sleep(1);
+            //} catch (InterruptedException e) {
+            //    e.printStackTrace();
+            //}
 
             randomDirection = (int) (Math.random() * 4);
 
@@ -503,7 +503,7 @@ public class RecursiveBacktracker
                 ChoosePathAndBuild();
             }
 
-
+            /*
             //}
             printMaze();
             // TESTING
@@ -515,7 +515,7 @@ public class RecursiveBacktracker
                 e.printStackTrace();
             }
             System.out.println("0,1 sec.");
-            
+            */
 
 
         }
@@ -540,11 +540,11 @@ public class RecursiveBacktracker
         System.out.println("currentRowPosition : " + currentRowPosition);
 
         System.out.println("Backtracking");
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        //try {
+        //    Thread.sleep(1);
+        //} catch (InterruptedException e) {
+        //    e.printStackTrace();
+        //}
 
 
         //testMode  System.out.println("***********BT**********************************************************************************************************");
