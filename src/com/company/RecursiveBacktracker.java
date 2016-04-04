@@ -111,6 +111,8 @@ public class RecursiveBacktracker
 
         ChoosePathAndBuild();// chose a path randomly and try to make a path.
 
+        insertMinotaur();
+
         System.out.println("END*******************************************************************************");
 
         printMaze();
@@ -118,424 +120,405 @@ public class RecursiveBacktracker
 
     }
 
+    private void insertMinotaur()
+    {
+        int startMinotaurRow = (int)(Math.random() *height )+2; // the higher the number the further down the board you go
+        int startMinotaurColumn = (int)(Math.random() *width )+2;// the higher the number the further right the board you go
+
+        if (maze.get(startMinotaurRow).get(startMinotaurColumn).equals(" ")) {
+            maze.get(startMinotaurRow).set(startMinotaurColumn, "M");
+        }
+        else
+            insertMinotaur();
+
+    }
 
 
     // this is the recursive method
     private void ChoosePathAndBuild()
     {
-        System.out.println("pathCount: ------> :"+ pathCount);
 
-        System.out.println("currentColumnPosition : " + currentColumnPosition);
-        System.out.println("currentRowPosition : " + currentRowPosition);
+        if(failedPathDirections[0]==1 &&
+            failedPathDirections[1]==1 &&
+            failedPathDirections[2]==1 &&
+            failedPathDirections[3]==1 &&
+                pathCount==1)
+        {
+            System.out.println("******************************************************done");
 
+            maze.get(currentRowPosition).set(currentColumnPosition," ");
+        }
+        else {
+            System.out.println("pathCount: ------> :" + pathCount);
+
+            System.out.println("currentColumnPosition : " + currentColumnPosition);
+            System.out.println("currentRowPosition : " + currentRowPosition);
 
 
             printMaze();
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
 
-        randomDirection = (int)(Math.random()*4);
+            randomDirection = (int) (Math.random() * 4);
 
-        System.out.println("randomDirection:  "+ randomDirection);
+            System.out.println("randomDirection:  " + randomDirection);
 
 
-        // TEST START
-            /*
-            System.out.println("previus rand direction " + randomDirection );
-            System.out.println("enter randomDirection");
-            randomDirection = input.nextInt();
+            // TEST START
+                /*
+                System.out.println("previus rand direction " + randomDirection );
+                System.out.println("enter randomDirection");
+                randomDirection = input.nextInt();
 
-            System.out.println("you entered New random direction : " + randomDirection);
-            */
+                System.out.println("you entered New random direction : " + randomDirection);
+                */
             // TEST END
 
 
+            //Try to build path  UP, if succes take 2 steps up
+            if (randomDirection == 0) {
+                //testMode System.out.println("up");
 
 
+                // NO SUCCES.
+                // Its already blank, or there is a path, or a border, Don't make path!
+                if (maze.get(currentRowPosition - 2).get(currentColumnPosition).equals("0") ||
+                        maze.get(currentRowPosition - 2).get(currentColumnPosition).equals("¤") ||
+                        maze.get(currentRowPosition - 2).get(currentColumnPosition).equals(" ") ||
 
-                //Try to build path  UP, if succes take 2 steps up
-                if(randomDirection == 0)
-                {
-                        //testMode System.out.println("up");
-
-
-
-                        // NO SUCCES.
-                        // Its already blank, or there is a path, or a border, Don't make path!
-                        if (maze.get(currentRowPosition-2).get(currentColumnPosition).equals("0")||
-                                maze.get(currentRowPosition-2).get(currentColumnPosition).equals("¤") ||
-                                maze.get(currentRowPosition-2).get(currentColumnPosition).equals(" ")||
-
-                                (
-                                        maze.get(currentRowPosition-1).get(currentColumnPosition).equals(" ")
-                                                &&
-                                                maze.get(currentRowPosition-2).get(currentColumnPosition).equals(" ")
-                                )
-                            )
-                        {
-                            // try an other direction
-                            //testMode    System.out.println("cant take this way up!");
-
-                            //if all directions have been tried. start BACK TRACKING!
-                            if(failedPathDirections[0]==1 && failedPathDirections[1]==1 && failedPathDirections[2]==1 &&
-                                    failedPathDirections[3]==1)
-                            {
-                                // if pathcount equals 1;
-                                // then break recursion loop
-                                if (pathCount==1)
-                                {
-                                    // end recursion
-                                    System.out.println("end recursion-break loop- in pathbuild mode " +
-                                            "************************************" +
-                                            "**********************************************************");
-
-                                    
-
-
-
-
-                                }
-
-                                else if (pathCount!= 1)
-                                {
-                                    //testMode System.out.println("all directions have failed. start backtracking!");
-
-                                    //printMaze();
-
-                                    //reset failedPathDirections array,
-                                    // because it has to be reset for next time we need try to build a path.
-                                    resetFailedPathDirectionsArray();
-                                    // activate backtracking
-                                    backtracking();
-                                }
-                                else
-                                    System.out.println("Error recursion");
-
-                            }
-                            else
-                            {
-                                //testMode System.out.println("try an other direction");
-
-                            // tell the "failedPathDirections" array that the path couldent be made.
-                            failedPathDirections[0]=1;
-
-
-
-
-                            ChoosePathAndBuild();
-                            }
-
-                        }
-
-
-                        // SUCCES! Take to steps UP. Make a path!
-
-                        // if the next position in the ext 2 step above is equal to a wall piece. then make a path.
-                        else// if (maze.get(currentRowPosition -1).get(currentColumnPosition).equals("+")
-                            //    && maze.get(currentRowPosition -2).get(currentColumnPosition).equals("+") )
-                        {
-                            // make path
-                            // -2 is because we go up so we have to use an "earlier"creaated aray
-                            // clear path 1. step
-                            maze.get(currentRowPosition-1).set(currentColumnPosition,"0");
-
-                            // clear path 2. step
-                            maze.get(currentRowPosition-2).set(currentColumnPosition,"0");
-                            //testMode System.out.println("make path up to row , column"+ (currentRowPosition-3)+","+(currentColumnPosition-1) );
-
-                            // save the position we just came from. will be used in back tracking:
-                            // Set  previous position to current:
-                            previousRowPosition = currentRowPosition;
-                            previousColumnPosition= currentColumnPosition;
-
-
-
-                            // set new position:
-                            // we move 2 steps up to our new position.
-                            currentRowPosition=currentRowPosition-2;
-                            //testMode System.out.println("currentColumnPosition "+currentColumnPosition + " should be as original");
-                            // Column position is not changed!
-                            //test
-                            //randomDirection=3;  //left
-                            pathCount++;
-                            System.out.println("pathCount : "+pathCount);
-                            //reset array "failedPathDirections" array set all to 0
-                            resetFailedPathDirectionsArray();
-                            ChoosePathAndBuild();
-                        }
-
-
-
-                }
-
-                // DOWN
-                //Try to build path to the DOWN
-                else if(randomDirection == 1)
-                {
-                    //testMode System.out.println("down");
-
-                    // NO SUCCES.Its already blank, Don't make path!
-                    if (maze.get(currentRowPosition+2).get(currentColumnPosition).equals("0")||
-                            maze.get(currentRowPosition+2).get(currentColumnPosition).equals("¤") ||
-                            maze.get(currentRowPosition+2).get(currentColumnPosition).equals(" ")||
-                            (
-                                    maze.get(currentRowPosition+1).get(currentColumnPosition).equals(" ")
-                                    &&
-                                    maze.get(currentRowPosition+2).get(currentColumnPosition).equals(" ")
-                            )
+                        (
+                                maze.get(currentRowPosition - 1).get(currentColumnPosition).equals(" ")
+                                        &&
+                                        maze.get(currentRowPosition - 2).get(currentColumnPosition).equals(" ")
                         )
-                    {
-                        // try an other direction
-                        //testMode System.out.println("cant take this way down!");
-                        //if all directions have been tried. start BACK TRACKING!
-                        if(failedPathDirections[0]==1 && failedPathDirections[1]==1 && failedPathDirections[2]==1 && failedPathDirections[3]==1)
-                        {
+                        ) {
+                    // try an other direction
+                    //testMode    System.out.println("cant take this way up!");
+
+                    //if all directions have been tried. start BACK TRACKING!
+                    if (failedPathDirections[0] == 1 && failedPathDirections[1] == 1 && failedPathDirections[2] == 1 &&
+                            failedPathDirections[3] == 1) {
+                        // if pathcount equals 1;
+                        // then break recursion loop
+                        if (pathCount == 1) {
+                            // end recursion
+                            System.out.println("end recursion-break loop- in pathbuild mode " +
+                                    "************************************" +
+                                    "**********************************************************");
+
+
+                        } else if (pathCount != 1) {
                             //testMode System.out.println("all directions have failed. start backtracking!");
+
                             //printMaze();
+
                             //reset failedPathDirections array,
                             // because it has to be reset for next time we need try to build a path.
                             resetFailedPathDirectionsArray();
                             // activate backtracking
+                            System.out.println("pathcount != 1 and backtrack");
                             backtracking();
+                        } else
+                            System.out.println("Error recursion");
 
-                        }
-                        else
-                        {
-                            //testMode System.out.println("try an other direction");
-                            // tell the "failedPathDirections" array that the path couldent be made.
-                            failedPathDirections[1]=1;
+                    } else {
+                        //testMode System.out.println("try an other direction");
 
-                            ChoosePathAndBuild();
-                        }
-
-                    }
-
-                    // SUCCES! Take to steps DOWN. Make a path!
-                    // if there is already a wall.
-                    else // if (maze.get(currentRowPosition +1).get(currentColumnPosition).equals("+")
-                         //   && maze.get(currentRowPosition +2).get(currentColumnPosition).equals("+") )
-
-                    {
-                        // make path
-                        // +,1+2 is because we go up so we have to use an "earlier"creaated row
-                        // clear path 1. step
-                        maze.get(currentRowPosition+1).set(currentColumnPosition,"0");
-
-                        // clear path 2. step
-                        maze.get(currentRowPosition+2).set(currentColumnPosition,"0");
-                        // +3 and +1 is just to get the names right.
-                        //testMode System.out.println("make path DOWN to : roww,column("+ (currentRowPosition+3)+","+(currentColumnPosition+1)+")" );
-
-                        // save the position we just came from. will be used in back tracking:
-                        // Set  previous position to current:
-                        previousRowPosition = currentRowPosition;
-                        previousColumnPosition= currentColumnPosition;
+                        // tell the "failedPathDirections" array that the path couldent be made.
+                        failedPathDirections[0] = 1;
 
 
-                        // set new position:
-                        // we move 2 steps up to our new position.
-                        // Notice only currentColumnPosition is changed
-                        currentRowPosition=currentRowPosition+2;
-                        //testMode System.out.println("currentColumnPosition :"+currentColumnPosition +"currentRowPosition :" + currentRowPosition);
-                        // Row position should not be changed!
-                        pathCount++;
-                        System.out.println("pathCount : "+pathCount);
-                        resetFailedPathDirectionsArray();
-                        ChoosePathAndBuild();
-                    }
-                }
-
-                // LEFT:
-                //Try to build path to the LEFT
-                else if(randomDirection == 2)
-                {
-                    //testMode System.out.println("left");
-
-                    // NO SUCCES.Its already 2 blank or theres the board ends or there is a path already,
-                    // then Don't make path! just backtrack
-                    if (
-                            maze.get(currentRowPosition).get(currentColumnPosition-2).equals("0") ||
-                                    maze.get(currentRowPosition).get(currentColumnPosition-2).equals("¤") ||
-
-                                    maze.get(currentRowPosition).get(currentColumnPosition-2).equals(" ")||
-
-
-                                    // and if there are already 2 blanck pieces.
-                                    (
-                                            maze.get(currentRowPosition).get(currentColumnPosition-1).equals(" ") &&
-                                                    maze.get(currentRowPosition).get(currentColumnPosition-2).equals(" ")
-
-                                    )
-                            )
-
-
-                    {
-                        // try an other direction
-//testMode                         System.out.println("cant take this way LEFT!");
-                        //if all directions have been tried. start BACK TRACKING!
-                        if(failedPathDirections[0]==1 && failedPathDirections[1]==1 && failedPathDirections[2]==1 && failedPathDirections[3]==1)
-                        {
-                            //testMode System.out.println("all directions have failed. start backtracking!");
-
-                            //printMaze();
-                            //reset failedPathDirections array,
-                            // because it has to be reset for next time we need try to build a path.
-                            resetFailedPathDirectionsArray();
-                            // activate backtracking
-
-                            backtracking();
-
-                        }
-                        else
-                        {
-                            //testMode                  System.out.println("try an other direction");
-                            // tell the "failedPathDirections" array that the path couldent be made.
-                            failedPathDirections[2]=1;
-                            ChoosePathAndBuild();
-                        }
-
-                    }
-
-                    // SUCCES Make a path! LEFT
-                    else //if (maze.get(currentRowPosition).get(currentColumnPosition-1).equals("+")&&
-                         //   maze.get(currentRowPosition).get(currentColumnPosition-2).equals("+"))
-                    {
-                        // make path
-                        // -2 is because we go up so we have to use an "earlier"creaated aray
-                        // clear path 1. step
-                        maze.get(currentRowPosition).set(currentColumnPosition-1,"0");
-
-                        // clear path 2. step
-                        maze.get(currentRowPosition).set(currentColumnPosition-2,"0");
-                        //testMode System.out.println("make path LEFT to : ("+ (currentRowPosition-2)+","+(currentColumnPosition-1)+")" );
-
-                        // save the position we just came from. will be used in back tracking: or is it?????????
-                        // Set  previous position to current:
-                        previousRowPosition = currentRowPosition;
-                        previousColumnPosition= currentColumnPosition;
-
-
-                        // set new position:
-                        // we move 2 steps up to our new position.
-                        // row position should not be changed! only currentColumnPosition
-                        currentColumnPosition=currentColumnPosition-2;
-                        //testMode System.out.println("currentColumnPosition :"+currentColumnPosition +"currentRowPosition :" +currentRowPosition);
-
-                        pathCount++;
-                        System.out.println("pathCount : "+pathCount);
-                        resetFailedPathDirectionsArray();
-                        ChoosePathAndBuild();
-                    }
-                }
-
-
-
-                // RIGHT
-
-                else if(randomDirection == 3)
-                {
-                    //testMode System.out.println("right");
-
-                    // NO SUCCES.Its already 2 blank or theres the board ends or there is a path already,
-                    // then Don't make path! just backtrack
-                    if (
-                            maze.get(currentRowPosition).get(currentColumnPosition+2).equals("0") ||
-                            maze.get(currentRowPosition).get(currentColumnPosition+2).equals("¤") ||
-                                    maze.get(currentRowPosition).get(currentColumnPosition+2).equals(" ") ||
-                                   // and if there are already 2 blanck pieces.
-                                   (
-                                       maze.get(currentRowPosition).get(currentColumnPosition+1).equals(" ") &&
-                                        maze.get(currentRowPosition).get(currentColumnPosition+2).equals(" ")
-
-                                   )
-                            )
-                    {
-                        // try an other direction
-                        //testMode System.out.println("cant take this way right!");
-                        //if all directions have been tried. start BACK TRACKING!
-                        if(failedPathDirections[0]==1 && failedPathDirections[1]==1 && failedPathDirections[2]==1 && failedPathDirections[3]==1)
-                        {
-                            //testMode System.out.println("all directions have failed. start backtracking!");
-
-                            //printMaze();
-                            //reset failedPathDirections array,
-                            // because it has to be reset for next time we need try to build a path.
-                            resetFailedPathDirectionsArray();
-                            // activate backtracking
-                            backtracking();
-
-                        }
-                        else
-                        {
-
-                            // tell the "failedPathDirections" array that the path couldent be made.
-                            failedPathDirections[3]=1;
-                            ChoosePathAndBuild();
-                        }
-
-                    }
-
-                    // SUCCES Make a path! Right
-                    else //if (maze.get(currentRowPosition).get(currentColumnPosition+1).equals("+")&&
-                         //   maze.get(currentRowPosition).get(currentColumnPosition+2).equals("+"))
-                    {
-                        // make path
-                        // +2 is because we go 2 to the right so we have to use an the same row
-                        // clear path 1. step
-                        maze.get(currentRowPosition).set(currentColumnPosition+1,"0");
-
-                        // clear path 2. step
-                        maze.get(currentRowPosition).set(currentColumnPosition+2,"0");
-                        //testMode              System.out.println("make path RIGHT to : ("+ (currentRowPosition+2)+","+(currentColumnPosition+1)+")" );
-
-                        // save the position we just came from. will be used in back tracking:
-                        // Set  previous position to current:
-                        previousRowPosition = currentRowPosition;
-                        previousColumnPosition= currentColumnPosition;
-
-
-                        // set new position:
-                        // we move 2 steps up to our new position.
-                        // Column position should not be changed!
-                        currentColumnPosition=currentColumnPosition+2;
-//testMode                         System.out.println("currentColumnPosition :"+currentColumnPosition +"currentRowPosition :" +currentRowPosition);
-
-                        pathCount++;
-                        System.out.println("pathCount : "+pathCount);
-                        resetFailedPathDirectionsArray();
                         ChoosePathAndBuild();
                     }
 
                 }
 
-                else
+
+                // SUCCES! Take to steps UP. Make a path!
+
+                // if the next position in the ext 2 step above is equal to a wall piece. then make a path.
+                else// if (maze.get(currentRowPosition -1).get(currentColumnPosition).equals("+")
+                //    && maze.get(currentRowPosition -2).get(currentColumnPosition).equals("+") )
                 {
-                    System.out.println("error in ChoosePathAndBuild()!");
+                    // make path
+                    // -2 is because we go up so we have to use an "earlier"creaated aray
+                    // clear path 1. step
+                    maze.get(currentRowPosition - 1).set(currentColumnPosition, "0");
+
+                    // clear path 2. step
+                    maze.get(currentRowPosition - 2).set(currentColumnPosition, "0");
+                    //testMode System.out.println("make path up to row , column"+ (currentRowPosition-3)+","+(currentColumnPosition-1) );
+
+                    // save the position we just came from. will be used in back tracking:
+                    // Set  previous position to current:
+                    previousRowPosition = currentRowPosition;
+                    previousColumnPosition = currentColumnPosition;
+
+
+                    // set new position:
+                    // we move 2 steps up to our new position.
+                    currentRowPosition = currentRowPosition - 2;
+                    //testMode System.out.println("currentColumnPosition "+currentColumnPosition + " should be as original");
+                    // Column position is not changed!
+                    //test
+                    //randomDirection=3;  //left
+                    pathCount++;
+                    System.out.println("pathCount : " + pathCount);
+                    //reset array "failedPathDirections" array set all to 0
+                    resetFailedPathDirectionsArray();
                     ChoosePathAndBuild();
                 }
 
 
+            }
+
+            // DOWN
+            //Try to build path to the DOWN
+            else if (randomDirection == 1) {
+                //testMode System.out.println("down");
+
+                // NO SUCCES.Its already blank, Don't make path!
+                if (maze.get(currentRowPosition + 2).get(currentColumnPosition).equals("0") ||
+                        maze.get(currentRowPosition + 2).get(currentColumnPosition).equals("¤") ||
+                        maze.get(currentRowPosition + 2).get(currentColumnPosition).equals(" ") ||
+                        (
+                                maze.get(currentRowPosition + 1).get(currentColumnPosition).equals(" ")
+                                        &&
+                                        maze.get(currentRowPosition + 2).get(currentColumnPosition).equals(" ")
+                        )
+                        ) {
+                    // try an other direction
+                    //testMode System.out.println("cant take this way down!");
+                    //if all directions have been tried. start BACK TRACKING!
+                    if (failedPathDirections[0] == 1 && failedPathDirections[1] == 1 && failedPathDirections[2] == 1 && failedPathDirections[3] == 1) {
+                        //testMode System.out.println("all directions have failed. start backtracking!");
+                        //printMaze();
+                        //reset failedPathDirections array,
+                        // because it has to be reset for next time we need try to build a path.
+                        resetFailedPathDirectionsArray();
+                        // activate backtracking
+                        backtracking();
+
+                    } else {
+                        //testMode System.out.println("try an other direction");
+                        // tell the "failedPathDirections" array that the path couldent be made.
+                        failedPathDirections[1] = 1;
+
+                        ChoosePathAndBuild();
+                    }
+
+                }
+
+                // SUCCES! Take to steps DOWN. Make a path!
+                // if there is already a wall.
+                else // if (maze.get(currentRowPosition +1).get(currentColumnPosition).equals("+")
+                //   && maze.get(currentRowPosition +2).get(currentColumnPosition).equals("+") )
+
+                {
+                    // make path
+                    // +,1+2 is because we go up so we have to use an "earlier"creaated row
+                    // clear path 1. step
+                    maze.get(currentRowPosition + 1).set(currentColumnPosition, "0");
+
+                    // clear path 2. step
+                    maze.get(currentRowPosition + 2).set(currentColumnPosition, "0");
+                    // +3 and +1 is just to get the names right.
+                    //testMode System.out.println("make path DOWN to : roww,column("+ (currentRowPosition+3)+","+(currentColumnPosition+1)+")" );
+
+                    // save the position we just came from. will be used in back tracking:
+                    // Set  previous position to current:
+                    previousRowPosition = currentRowPosition;
+                    previousColumnPosition = currentColumnPosition;
 
 
+                    // set new position:
+                    // we move 2 steps up to our new position.
+                    // Notice only currentColumnPosition is changed
+                    currentRowPosition = currentRowPosition + 2;
+                    //testMode System.out.println("currentColumnPosition :"+currentColumnPosition +"currentRowPosition :" + currentRowPosition);
+                    // Row position should not be changed!
+                    pathCount++;
+                    System.out.println("pathCount : " + pathCount);
+                    resetFailedPathDirectionsArray();
+                    ChoosePathAndBuild();
+                }
+            }
 
-        //}
-        printMaze();
-        // TESTING
-        System.out.println("sleep ! (end of choose path methode)");
-        // sleeptest
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            // LEFT:
+            //Try to build path to the LEFT
+            else if (randomDirection == 2) {
+                //testMode System.out.println("left");
+
+                // NO SUCCES.Its already 2 blank or theres the board ends or there is a path already,
+                // then Don't make path! just backtrack
+                if (
+                        maze.get(currentRowPosition).get(currentColumnPosition - 2).equals("0") ||
+                                maze.get(currentRowPosition).get(currentColumnPosition - 2).equals("¤") ||
+
+                                maze.get(currentRowPosition).get(currentColumnPosition - 2).equals(" ") ||
+
+
+                                // and if there are already 2 blanck pieces.
+                                (
+                                        maze.get(currentRowPosition).get(currentColumnPosition - 1).equals(" ") &&
+                                                maze.get(currentRowPosition).get(currentColumnPosition - 2).equals(" ")
+
+                                )
+                        )
+
+
+                {
+                    // try an other direction
+                    //testMode                         System.out.println("cant take this way LEFT!");
+                    //if all directions have been tried. start BACK TRACKING!
+                    if (failedPathDirections[0] == 1 && failedPathDirections[1] == 1 && failedPathDirections[2] == 1 && failedPathDirections[3] == 1) {
+                        //testMode System.out.println("all directions have failed. start backtracking!");
+
+                        //printMaze();
+                        //reset failedPathDirections array,
+                        // because it has to be reset for next time we need try to build a path.
+                        resetFailedPathDirectionsArray();
+                        // activate backtracking
+
+                        backtracking();
+
+                    } else {
+                        //testMode                  System.out.println("try an other direction");
+                        // tell the "failedPathDirections" array that the path couldent be made.
+                        failedPathDirections[2] = 1;
+                        ChoosePathAndBuild();
+                    }
+
+                }
+
+                // SUCCES Make a path! LEFT
+                else //if (maze.get(currentRowPosition).get(currentColumnPosition-1).equals("+")&&
+                //   maze.get(currentRowPosition).get(currentColumnPosition-2).equals("+"))
+                {
+                    // make path
+                    // -2 is because we go up so we have to use an "earlier"creaated aray
+                    // clear path 1. step
+                    maze.get(currentRowPosition).set(currentColumnPosition - 1, "0");
+
+                    // clear path 2. step
+                    maze.get(currentRowPosition).set(currentColumnPosition - 2, "0");
+                    //testMode System.out.println("make path LEFT to : ("+ (currentRowPosition-2)+","+(currentColumnPosition-1)+")" );
+
+                    // save the position we just came from. will be used in back tracking: or is it?????????
+                    // Set  previous position to current:
+                    previousRowPosition = currentRowPosition;
+                    previousColumnPosition = currentColumnPosition;
+
+
+                    // set new position:
+                    // we move 2 steps up to our new position.
+                    // row position should not be changed! only currentColumnPosition
+                    currentColumnPosition = currentColumnPosition - 2;
+                    //testMode System.out.println("currentColumnPosition :"+currentColumnPosition +"currentRowPosition :" +currentRowPosition);
+
+                    pathCount++;
+                    System.out.println("pathCount : " + pathCount);
+                    resetFailedPathDirectionsArray();
+                    ChoosePathAndBuild();
+                }
+            }
+
+
+            // RIGHT
+
+            else if (randomDirection == 3) {
+                //testMode System.out.println("right");
+
+                // NO SUCCES.Its already 2 blank or theres the board ends or there is a path already,
+                // then Don't make path! just backtrack
+                if (
+                        maze.get(currentRowPosition).get(currentColumnPosition + 2).equals("0") ||
+                                maze.get(currentRowPosition).get(currentColumnPosition + 2).equals("¤") ||
+                                maze.get(currentRowPosition).get(currentColumnPosition + 2).equals(" ") ||
+                                // and if there are already 2 blanck pieces.
+                                (
+                                        maze.get(currentRowPosition).get(currentColumnPosition + 1).equals(" ") &&
+                                                maze.get(currentRowPosition).get(currentColumnPosition + 2).equals(" ")
+
+                                )
+                        ) {
+                    // try an other direction
+                    //testMode System.out.println("cant take this way right!");
+                    //if all directions have been tried. start BACK TRACKING!
+                    if (failedPathDirections[0] == 1 && failedPathDirections[1] == 1 && failedPathDirections[2] == 1 && failedPathDirections[3] == 1) {
+                        //testMode System.out.println("all directions have failed. start backtracking!");
+
+                        //printMaze();
+                        //reset failedPathDirections array,
+                        // because it has to be reset for next time we need try to build a path.
+                        resetFailedPathDirectionsArray();
+                        // activate backtracking
+                        backtracking();
+
+                    } else {
+
+                        // tell the "failedPathDirections" array that the path couldent be made.
+                        failedPathDirections[3] = 1;
+                        ChoosePathAndBuild();
+                    }
+
+                }
+
+                // SUCCES Make a path! Right
+                else //if (maze.get(currentRowPosition).get(currentColumnPosition+1).equals("+")&&
+                //   maze.get(currentRowPosition).get(currentColumnPosition+2).equals("+"))
+                {
+                    // make path
+                    // +2 is because we go 2 to the right so we have to use an the same row
+                    // clear path 1. step
+                    maze.get(currentRowPosition).set(currentColumnPosition + 1, "0");
+
+                    // clear path 2. step
+                    maze.get(currentRowPosition).set(currentColumnPosition + 2, "0");
+                    //testMode              System.out.println("make path RIGHT to : ("+ (currentRowPosition+2)+","+(currentColumnPosition+1)+")" );
+
+                    // save the position we just came from. will be used in back tracking:
+                    // Set  previous position to current:
+                    previousRowPosition = currentRowPosition;
+                    previousColumnPosition = currentColumnPosition;
+
+
+                    // set new position:
+                    // we move 2 steps up to our new position.
+                    // Column position should not be changed!
+                    currentColumnPosition = currentColumnPosition + 2;
+                    //testMode                         System.out.println("currentColumnPosition :"+currentColumnPosition +"currentRowPosition :" +currentRowPosition);
+
+                    pathCount++;
+                    System.out.println("pathCount : " + pathCount);
+                    resetFailedPathDirectionsArray();
+                    ChoosePathAndBuild();
+                }
+
+            } else {
+                System.out.println("error in ChoosePathAndBuild()!");
+                ChoosePathAndBuild();
+            }
+
+
+            //}
+            printMaze();
+            // TESTING
+            System.out.println("sleep ! (end of choose path methode)");
+            // sleeptest
+            try {
+                Thread.sleep(10);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            System.out.println("0,1 sec.");
+            
+
+
         }
-        System.out.println("0,1 sec.");
-
-
-
-
     }
 
     private void backtracking()
