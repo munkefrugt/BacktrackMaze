@@ -15,8 +15,8 @@ public class RecursiveBacktracker
     int height;
     int currentRowPosition;
     int currentColumnPosition;
-    // count amount of path build
-    int pathBuild;
+
+
     int randomDirection;
     // this array changes if therehas been made a try to go down a certain path. 0->1
     // the index 0 = up, 1= down,2=left, 3=right.
@@ -24,6 +24,9 @@ public class RecursiveBacktracker
     int failedPathDirections[] = {0,0,0,0,};
 
 
+    // count each piece of path that have been created, added or subtracted. when path count is 0 and theres no where to
+    // go the loop breaks.
+    int pathCount;
 
     // if there has been made a try to backtrack and it failed change the index from  0->1
     // the index 0 = up, 1= down,2=left, 3=right.
@@ -45,9 +48,6 @@ public class RecursiveBacktracker
 
     ArrayList<ArrayList<String>> maze = new ArrayList<ArrayList<String>>();
 
-    // count each piece of path that have been created, added or subtracted. when path count is 0 and theres no where to
-    // go the loop breaks.
-    int pathCount;
 
     public RecursiveBacktracker()
     {
@@ -123,6 +123,7 @@ public class RecursiveBacktracker
     // this is the recursive method
     private void ChoosePathAndBuild()
     {
+        System.out.println("pathCount: ------> :"+ pathCount);
 
         System.out.println("currentColumnPosition : " + currentColumnPosition);
         System.out.println("currentRowPosition : " + currentRowPosition);
@@ -143,7 +144,6 @@ public class RecursiveBacktracker
 
         // TEST START
             /*
-            System.out.println("amount pathbuild  :"+pathBuild);
             System.out.println("previus rand direction " + randomDirection );
             System.out.println("enter randomDirection");
             randomDirection = input.nextInt();
@@ -188,10 +188,18 @@ public class RecursiveBacktracker
                                 if (pathCount==1)
                                 {
                                     // end recursion
-                                    System.out.println("end recursion-break.");
+                                    System.out.println("end recursion-break loop- in pathbuild mode " +
+                                            "************************************" +
+                                            "**********************************************************");
+
+                                    
+
+
+
+
                                 }
 
-                                else
+                                else if (pathCount!= 1)
                                 {
                                     //testMode System.out.println("all directions have failed. start backtracking!");
 
@@ -203,6 +211,8 @@ public class RecursiveBacktracker
                                     // activate backtracking
                                     backtracking();
                                 }
+                                else
+                                    System.out.println("Error recursion");
 
                             }
                             else
@@ -250,10 +260,10 @@ public class RecursiveBacktracker
                             // Column position is not changed!
                             //test
                             //randomDirection=3;  //left
-                            pathBuild++;
+                            pathCount++;
+                            System.out.println("pathCount : "+pathCount);
                             //reset array "failedPathDirections" array set all to 0
                             resetFailedPathDirectionsArray();
-
                             ChoosePathAndBuild();
                         }
 
@@ -331,7 +341,8 @@ public class RecursiveBacktracker
                         currentRowPosition=currentRowPosition+2;
                         //testMode System.out.println("currentColumnPosition :"+currentColumnPosition +"currentRowPosition :" + currentRowPosition);
                         // Row position should not be changed!
-                        pathBuild++;
+                        pathCount++;
+                        System.out.println("pathCount : "+pathCount);
                         resetFailedPathDirectionsArray();
                         ChoosePathAndBuild();
                     }
@@ -413,7 +424,8 @@ public class RecursiveBacktracker
                         currentColumnPosition=currentColumnPosition-2;
                         //testMode System.out.println("currentColumnPosition :"+currentColumnPosition +"currentRowPosition :" +currentRowPosition);
 
-                        pathBuild++;
+                        pathCount++;
+                        System.out.println("pathCount : "+pathCount);
                         resetFailedPathDirectionsArray();
                         ChoosePathAndBuild();
                     }
@@ -491,7 +503,8 @@ public class RecursiveBacktracker
                         currentColumnPosition=currentColumnPosition+2;
 //testMode                         System.out.println("currentColumnPosition :"+currentColumnPosition +"currentRowPosition :" +currentRowPosition);
 
-                        pathBuild++;
+                        pathCount++;
+                        System.out.println("pathCount : "+pathCount);
                         resetFailedPathDirectionsArray();
                         ChoosePathAndBuild();
                     }
@@ -511,7 +524,7 @@ public class RecursiveBacktracker
         //}
         printMaze();
         // TESTING
-        System.out.println("sleep ! end of choose path methode");
+        System.out.println("sleep ! (end of choose path methode)");
         // sleeptest
         try {
             Thread.sleep(100);
@@ -520,14 +533,16 @@ public class RecursiveBacktracker
         }
         System.out.println("0,1 sec.");
 
-        //System.out.println(pathBuild +" path  were build");
 
 
 
     }
 
     private void backtracking()
-    {   // follow the path back again.
+    {
+        System.out.println("pathCount: ------> :"+ pathCount);
+
+        // follow the path back again.
         // for each time there is a path its marked with "p"
         // what happens in sudo code:
 
@@ -582,22 +597,20 @@ public class RecursiveBacktracker
             // walk the old path and try each new old step to make a path.
 
             // for breaking out of the recursion loop
-            if (failedBackTrackingDirections[0]==1 &&
-                failedBackTrackingDirections[1]==1 &&
-                failedBackTrackingDirections[2]==1 &&
-                failedBackTrackingDirections[3]==1
-                    )
+            // if there is only on path left.
+
+            /*if (pathCount==1)
             {
                 // end recursive loop.
                 System.out.println("End recursion..");
-            }
+            }*/
 
             // BACKTRACK UP  (0) // to go up to the next array -1,-2 are needed.
             //try Up 2 blank road steps.
             //if there are 2 "p" road steps up and we dident just come from that direction
             // then change the position to that new location.
                 //(-1), is for seeing the position 1 step above, and (-2) is to see 2 steps above.
-            else if (maze.get(currentRowPosition - 1).get(currentColumnPosition).equals("0") &&
+            if (maze.get(currentRowPosition - 1).get(currentColumnPosition).equals("0") &&
                     maze.get(currentRowPosition - 2).get(currentColumnPosition).equals("0")
                     && randomBackTrackDirection == 0
                     )
@@ -650,8 +663,11 @@ public class RecursiveBacktracker
 
 
 
-                    resetfailedBackTrackingDirections();
+                    //resetfailedBackTrackingDirections();
 
+                    // now we made a backtracking move so we subtract the move, will be used to break the loop.
+                    pathCount--;
+                    System.out.println("pathCount ---------->: "+pathCount);
                     ChoosePathAndBuild();
                 /*}
                 else
@@ -714,6 +730,10 @@ public class RecursiveBacktracker
                     //testMode System.out.println("we just backtracked one step down now we cant go up.");
                     BackTrackTestCount++;
                     resetfailedBackTrackingDirections();
+                    // now we made a backtracking move so we subtract the move, will be used to break the loop.
+                    pathCount--;
+                    System.out.println("pathCount : "+pathCount);
+
                     ChoosePathAndBuild();
                 /*}
                 else
@@ -765,8 +785,10 @@ public class RecursiveBacktracker
                     // block direction, 3 so we cant go left we just came from left
                     blockedDirection = 3;
 
-                    BackTrackTestCount++;
-                    resetfailedBackTrackingDirections();
+                    // now we made a backtracking move so we subtract the move, will be used to break the loop.
+
+                    pathCount--;
+                    System.out.println("pathCount : "+pathCount);
                     ChoosePathAndBuild();
                 /*}
                 else
@@ -814,9 +836,10 @@ public class RecursiveBacktracker
 
                     // block direction, 2 so we cant go right we just came from right
                     blockedDirection = 2;
+                    // now we made a backtracking move so we subtract the move, will be used to break the loop.
 
-                    BackTrackTestCount++;
-                    resetfailedBackTrackingDirections();
+                    pathCount--;
+                    System.out.println("pathCount : "+pathCount);
                     ChoosePathAndBuild();
                 /*}
                 else
@@ -919,7 +942,7 @@ public class RecursiveBacktracker
         currentColumnPosition=startColumn;
         System.out.println("currentRowPosition  "+currentRowPosition);
         System.out.println("currentColumnPosition  "+currentColumnPosition);
-
+        pathCount++;
 
 
     }
