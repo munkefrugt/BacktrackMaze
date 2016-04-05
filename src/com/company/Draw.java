@@ -20,12 +20,14 @@ import java.util.ArrayList;
 // extends Jpanel, because we draw on the Jpanel, not on the frame.
 public class Draw extends JPanel implements ActionListener,KeyListener
 {
+    ArrayList<ArrayList<String>> maze;
     // speed of the repaint
     Timer t = new Timer(10,this);
     int x= 0, y=0 , velx = 0, vely = 0;
 
     public Draw(ArrayList<ArrayList<String>> maze)
     {
+        this.maze = maze;
         t.start();
         addKeyListener(this);
         // allows us to use the keyListener.
@@ -47,6 +49,13 @@ public class Draw extends JPanel implements ActionListener,KeyListener
     // allows us to draw graphics on the screen
     public void paintComponent(Graphics g)
     {
+        //print the maze:
+        for (int i = 0; i <4 ; i++)
+        {
+            g.fillRect(20,20,20,20);
+        }
+        //System.out.println(maze.get(1).get(1));
+
         super.paintComponent(g);
         //Graphics2D g2 = (Graphics2D) g;
         //g2.fillOval(x, 40,y,  40);
