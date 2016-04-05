@@ -1,16 +1,17 @@
 package com.company;
 
 import javax.swing.*;
+import java.util.ArrayList;
 
 /**
  * Created by v on 4/4/16.
  */
 public class Gui extends JFrame {
 
-    public Gui()
+    public Gui(ArrayList<ArrayList<String>> maze)
     {
         JFrame frame = new JFrame("BacktrackerLabyrinth");
-        Draw draw = new Draw();
+        Draw draw = new Draw(maze);
         // add the drawing to the frame.
         frame.add(draw);
 

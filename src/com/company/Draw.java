@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.geom.Arc2D;
+import java.util.ArrayList;
 
 /**
  * Created by v on 4/4/16.
@@ -19,10 +20,11 @@ import java.awt.geom.Arc2D;
 // extends Jpanel, because we draw on the Jpanel, not on the frame.
 public class Draw extends JPanel implements ActionListener,KeyListener
 {
-    Timer t = new Timer(5,this);
+    // speed of the repaint
+    Timer t = new Timer(10,this);
     int x= 0, y=0 , velx = 0, vely = 0;
 
-    public Draw()
+    public Draw(ArrayList<ArrayList<String>> maze)
     {
         t.start();
         addKeyListener(this);
@@ -49,14 +51,14 @@ public class Draw extends JPanel implements ActionListener,KeyListener
         //Graphics2D g2 = (Graphics2D) g;
         //g2.fillOval(x, 40,y,  40);
                 //(new Ellipse2D.Double(x,y,40,40));
-        g.setColor(Color.BLACK);
+        g.setColor(Color.PINK);
         // int x, int y, int width, int height.
         g.fillRect(x,y,20,20);
-        /*g.fillRect(20,20,20,20);
+        g.fillRect(20,20,20,20);
         g.setColor(Color.ORANGE);
         g.fillRect(40,40,20,20);
         g.setColor(Color.CYAN);
-        g.fillOval(60,60,20,20);*/
+        g.fillOval(60,60,20,20);
     }
 
     public void actionPerformed(ActionEvent e)
@@ -76,6 +78,7 @@ public class Draw extends JPanel implements ActionListener,KeyListener
         vely= -1;
         velx= 0;
         System.out.println("up");
+        repaint();
     }
 
     public void down()
@@ -83,6 +86,7 @@ public class Draw extends JPanel implements ActionListener,KeyListener
         vely= 1;
         velx= 0;
         System.out.println("down");
+        repaint();
     }
 
     public void left()
@@ -90,6 +94,7 @@ public class Draw extends JPanel implements ActionListener,KeyListener
         vely= 0;
         velx= -1;
         System.out.println("left");
+        repaint();
     }
 
     public void right()
@@ -97,6 +102,7 @@ public class Draw extends JPanel implements ActionListener,KeyListener
         vely= 0;
         velx= 1;
         System.out.println("right");
+        repaint();
     }
 
 

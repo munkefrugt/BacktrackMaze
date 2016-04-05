@@ -117,7 +117,7 @@ public class RecursiveBacktracker
         System.out.println("END*******************************************************************************");
 
         printMaze();
-        Gui gui= new Gui();
+        Gui gui= new Gui(maze);
 
 
     }
