@@ -49,6 +49,7 @@ public class Draw extends JPanel implements ActionListener,KeyListener
     // allows us to draw graphics on the screen
     public void paintComponent(Graphics g)
     {
+        
         //print the maze:
         for (int i = 0; i <4 ; i++)
         {
