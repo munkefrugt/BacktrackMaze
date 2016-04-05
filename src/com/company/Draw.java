@@ -24,9 +24,13 @@ public class Draw extends JPanel implements ActionListener,KeyListener
     // speed of the repaint
     Timer t = new Timer(10,this);
     int x= 0, y=0 , velx = 0, vely = 0;
+    private int totalHeight;
+    private int totalWidth;
 
-    public Draw(ArrayList<ArrayList<String>> maze)
+    public Draw(ArrayList<ArrayList<String>> maze, int totalHeight, int totalWidth)
     {
+        this.totalWidth=totalWidth;
+        this.totalHeight=totalHeight;
         this.maze = maze;
         t.start();
         addKeyListener(this);
@@ -47,28 +51,72 @@ public class Draw extends JPanel implements ActionListener,KeyListener
 
 
     // allows us to draw graphics on the screen
-    public void paintComponent(Graphics g)
-    {
-        
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
+
+
         //print the maze:
-        for (int i = 0; i <4 ; i++)
+
+        for (int j = 0; j <totalHeight ; j++)
         {
-            g.fillRect(20,20,20,20);
+
+            for (int i = 0; i <totalWidth ; i++)
+            {
+                if(maze.get(j).get(i).equals(" "))
+                {
+                    g.setColor(Color.WHITE);
+                    g.fillRect(i * 10, j * 10, 10, 10);
+                }
+                else if(maze.get(j).get(i).equals("+"))
+                {
+                    g.setColor(Color.DARK_GRAY);
+                    g.fillRect(i * 10, j * 10, 10, 10);
+                }
+                else if (maze.get(j).get(i).equals("M"))
+                {
+                    g.setColor(Color.ORANGE);
+                    g.fillRect(i * 10, j * 10, 10, 10);
+                }
+                else if (maze.get(j).get(i).equals("¤"))
+                {
+                    g.setColor(Color.BLACK);
+                    g.fillRect(i * 10, j * 10, 10, 10);
+                }
+
+
+            }
+            //System.out.println();
         }
+
+        /*for (int i = 0; i < 6; i++)
+        {
+            for (int j = 0; j < 6; j++) {
+
+                if (maze.get(i).get(j).equals(" "))
+                {
+                    g.setColor(Color.PINK);
+                    g.fillRect(i * 10, j * 10, 10, 10);
+                }
+                else if (maze.get(i).get(j).equals("+")) ;
+                {
+                    g.setColor(Color.WHITE);
+                    g.fillRect(i * 10, j * 10, 10, 10);
+                }
+            }
+        }*/
         //System.out.println(maze.get(1).get(1));
 
-        super.paintComponent(g);
         //Graphics2D g2 = (Graphics2D) g;
         //g2.fillOval(x, 40,y,  40);
                 //(new Ellipse2D.Double(x,y,40,40));
-        g.setColor(Color.PINK);
         // int x, int y, int width, int height.
         g.fillRect(x,y,20,20);
-        g.fillRect(20,20,20,20);
-        g.setColor(Color.ORANGE);
+        //g.fillRect(20,20,20,20);
+        /*g.setColor(Color.ORANGE);
         g.fillRect(40,40,20,20);
         g.setColor(Color.CYAN);
         g.fillOval(60,60,20,20);
+        */
     }
 
     public void actionPerformed(ActionEvent e)

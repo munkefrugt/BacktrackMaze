@@ -8,10 +8,10 @@ import java.util.ArrayList;
  */
 public class Gui extends JFrame {
 
-    public Gui(ArrayList<ArrayList<String>> maze)
+    public Gui(ArrayList<ArrayList<String>> maze, int totalHeight, int totalWidth)
     {
         JFrame frame = new JFrame("BacktrackerLabyrinth");
-        Draw draw = new Draw(maze);
+        Draw draw = new Draw(maze,totalHeight,totalWidth);
         // add the drawing to the frame.
         frame.add(draw);
 
