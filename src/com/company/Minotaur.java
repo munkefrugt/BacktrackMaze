@@ -1,6 +1,7 @@
 package com.company;
 
 
+
 import java.util.ArrayList;
 
 public class Minotaur {
@@ -9,6 +10,8 @@ public class Minotaur {
     private final ArrayList<ArrayList<String>> maze;
     int currentColumnPosition;
     int currentRowPosition;
+
+    private Gui gui;
 
     public Minotaur(ArrayList<ArrayList<String>> maze, int startMinotaurRow, int startMinotaurColumn)
     {
@@ -27,6 +30,9 @@ public class Minotaur {
         else if (maze.get(currentRowPosition - 1).get(currentColumnPosition).equals("F"))
         {
             System.out.println("congratilations, you got out");
+
+            gui.makeWinnerFrame();
+
         }
         else if (maze.get(currentRowPosition-1).get(currentColumnPosition).equals("S"))
         {
@@ -95,6 +101,7 @@ public class Minotaur {
         else if (maze.get(currentRowPosition).get(currentColumnPosition- 1).equals("F"))
         {
             System.out.println("congratilations, you got out");
+            
         }
         else if (maze.get(currentRowPosition).get(currentColumnPosition-1).equals("S"))
         {
@@ -129,6 +136,7 @@ public class Minotaur {
         else if (maze.get(currentRowPosition).get(currentColumnPosition+1).equals("F"))
         {
             System.out.println("congratilations, you got out");
+            gui.makeWinnerFrame();
         }
         else if (maze.get(currentRowPosition).get(currentColumnPosition+1).equals("S"))
         {
@@ -152,5 +160,11 @@ public class Minotaur {
         currentColumnPosition = currentColumnPosition+1;
 
         }
+    }
+
+
+    public void passInstance(Gui gui)
+    {
+        this.gui=gui;
     }
 }

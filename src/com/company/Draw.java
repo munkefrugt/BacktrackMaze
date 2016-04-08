@@ -9,7 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.geom.Arc2D;
+
 import java.util.ArrayList;
 
 /**
@@ -20,7 +20,7 @@ import java.util.ArrayList;
 // extends Jpanel, because we draw on the Jpanel, not on the frame.
 public class Draw extends JPanel implements ActionListener,KeyListener
 {
-    final Minotaur minotaur;
+    Minotaur minotaur;
     int minotaurrow;//x
     int minotaurColumn;// y
 
@@ -82,7 +82,7 @@ public class Draw extends JPanel implements ActionListener,KeyListener
                 else if (maze.get(j).get(i).equals("M"))
                 {
                     g.setColor(Color.ORANGE);
-                    g.fillRect(i * 20, j * 20, 20, 20);
+                    g.fillOval(i * 20, j * 20, 20, 20);
                 }
                 else if (maze.get(j).get(i).equals("¤"))
                 {
@@ -110,9 +110,7 @@ public class Draw extends JPanel implements ActionListener,KeyListener
             }
         }
 
-        //g.fillOval(minotaurrow,minotaurColumn);
-        // int x, int y, int width, int height.
-        //g.fillRect(minotaurrow,minotaurColumn,20,20);
+
 
     }
 
@@ -159,6 +157,7 @@ public class Draw extends JPanel implements ActionListener,KeyListener
         velx= 1;
         System.out.println("right");
         repaint();
+
     }
 
 
@@ -189,6 +188,7 @@ public class Draw extends JPanel implements ActionListener,KeyListener
         {
             right();
             minotaur.minotaurRight();
+
         }
     }
     // the two methodes below needs to be included because we implemented Keylistener.

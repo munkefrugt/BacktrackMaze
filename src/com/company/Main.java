@@ -7,7 +7,7 @@ public class Main
 {
     public static void main(String[] args)
     {
-        RecursiveBacktracker maze1 = new RecursiveBacktracker();
-        maze1.generateMaze();
+        Setup setup= new Setup();
+
     }
 }

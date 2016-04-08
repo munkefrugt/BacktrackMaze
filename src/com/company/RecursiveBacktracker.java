@@ -9,6 +9,7 @@ import java.util.Scanner;
 public class RecursiveBacktracker
 {
 
+    private final Setup setup;
     Scanner input = new Scanner(System.in);
     int totalWidth;
     int totalHeight;
@@ -52,15 +53,15 @@ public class RecursiveBacktracker
     int startMinotaurColumn;
     private int startRow;
     private int startColumn;
+    public RecursiveBacktracker recursiveBacktracker;
 
 
-    public RecursiveBacktracker()
+    public RecursiveBacktracker(Setup setup)
     {
+        this.setup=setup;
+        
+        //this.recursiveBacktracker = recursiveBacktracker;
         System.out.println("Welcome to my a 'mazing' backtracking maze algorithm. \n" );
-
-        setSizeOfMaze();
-
-
 
     }
 
@@ -96,19 +97,14 @@ public class RecursiveBacktracker
 
     }
 
-    // stores the size in global veriables.
-   /*private void setSize(int width, int height)
-    {
-        this.width=width;
-        this.height=height;
-        // we add 4 because of the border takes up 4 spaces.
-        this.totalWidth=width+4;
-        this.totalHeight=height+4;
-    }*/
+
 
     // makes a maze.
     public void generateMaze()
     {
+        System.out.println("generate maze");
+        setSizeOfMaze();
+
         System.out.println(width);
         System.out.println(height);
         /*
@@ -135,7 +131,10 @@ public class RecursiveBacktracker
 
         printMaze();
         Minotaur minotaur = new Minotaur(maze,startMinotaurRow,startMinotaurColumn);
-        Gui gui= new Gui(minotaur,maze,totalHeight,totalWidth,startMinotaurRow,startMinotaurColumn);
+        Gui gui= new Gui(recursiveBacktracker,minotaur,maze,totalHeight,totalWidth,startMinotaurRow,startMinotaurColumn);
+        minotaur.passInstance(gui);
+        gui.passInstance(recursiveBacktracker);
+        gui.createFrame();
 
 
     }
@@ -994,7 +993,7 @@ public class RecursiveBacktracker
 
     }
 
-    private void printMaze()
+    public void printMaze()
     {
 
 
@@ -1046,4 +1045,12 @@ public class RecursiveBacktracker
         maze.add(border);
     }
 
+    public void passInstanceOfRecursiveBacktracker(RecursiveBacktracker recursiveBacktracker) {
+        this.recursiveBacktracker=recursiveBacktracker;
+    }
+
+
+    public void test() {
+        System.out.println("test");
+    }
 }
