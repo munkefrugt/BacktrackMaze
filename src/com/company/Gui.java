@@ -8,10 +8,11 @@ import java.util.ArrayList;
  */
 public class Gui extends JFrame {
 
-    public Gui(ArrayList<ArrayList<String>> maze, int totalHeight, int totalWidth)
+    public Gui(Minotaur minotaur, ArrayList<ArrayList<String>> maze, int totalHeight, int totalWidth, int startMinotaurRow, int startMinotaurColumn)
     {
         JFrame frame = new JFrame("BacktrackerLabyrinth");
-        Draw draw = new Draw(maze,totalHeight,totalWidth);
+
+        Draw draw = new Draw(minotaur,maze,totalHeight,totalWidth,startMinotaurRow,startMinotaurColumn);
         // add the drawing to the frame.
         frame.add(draw);
 
@@ -20,7 +21,7 @@ public class Gui extends JFrame {
         frame.setVisible(true);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        frame.setSize(800, 600);
+        frame.setSize(totalWidth*20, totalHeight*20);
         //draw.drawing();
     }
 

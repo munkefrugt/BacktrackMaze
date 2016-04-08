@@ -8,6 +8,7 @@ import java.util.Scanner;
  */
 public class RecursiveBacktracker
 {
+
     Scanner input = new Scanner(System.in);
     int totalWidth;
     int totalHeight;
@@ -47,49 +48,63 @@ public class RecursiveBacktracker
     int BackTrackTestCount;
 
     ArrayList<ArrayList<String>> maze = new ArrayList<ArrayList<String>>();
+    int startMinotaurRow;
+    int startMinotaurColumn;
+    private int startRow;
+    private int startColumn;
 
 
     public RecursiveBacktracker()
     {
-        System.out.println("Welcome to my backtracking maze algorithm. \n" +
-                "\"" +
-                "It cant make so big mazes (over 8 X 8 mazes starts to be a problem for the algorithm.)\n" +
-                "then they start to make errors a lot. \n" +
-                "hope its good enough." +
-                "REASON: it is properly because the mekanism that makes the random numbers for finding the backtracking direction isen't working so well. \n" +
-                "So Please try with numbers like 3X3, 4X4, 6X6, 8X8. (8X6) dose work sometimes. even 12X 12 \n"+
-                "but i have to run it at least 5 times to get lucky. \n" +
-                "if it dosen't work the first time you will have to run the code again a couple of times.\n" +
-                "Good luck and happy mazing :)");
+        System.out.println("Welcome to my a 'mazing' backtracking maze algorithm. \n" );
+
+        setSizeOfMaze();
+
+
+
+    }
+
+    private void setSizeOfMaze()
+    {
 
         // set size
-        System.out.println("enter width, only EVEN NUMBERS");
-        int width = input.nextInt();
+        System.out.println("enter width and Height, only UNEVEN NUMBERS");
+        width = input.nextInt();
+
+        // even
+        if (width % 2 == 0)
+        {
+            System.out.println("even number");
+            setSizeOfMaze();
+        }
+
+        else
+        {
+            System.out.println("odd number");
+        }
         System.out.println("your  width is: " + width);
 
-        System.out.println("enter height only EVEN NUMBERS");
-        int height = input.nextInt();
+        System.out.println("enter height only ODD EVEN NUMBERS, ex 1,3,5 ec");
+        height = input.nextInt();
 
         System.out.println("your  height is: " + height);
 
-
-        setSize(width,height);
+        totalWidth=width+4;
+        totalHeight=height+4;
 
 
 
     }
 
     // stores the size in global veriables.
-    private void setSize(int width, int height)
+   /*private void setSize(int width, int height)
     {
         this.width=width;
         this.height=height;
         // we add 4 because of the border takes up 4 spaces.
         this.totalWidth=width+4;
         this.totalHeight=height+4;
-
-
-    }
+    }*/
 
     // makes a maze.
     public void generateMaze()
@@ -103,53 +118,73 @@ public class RecursiveBacktracker
         System.out.println("fill maze");
         fillMaze();// prints maze.
         System.out.println("make rand start pos");
-        makeRandomStartPosition();
+        makeStartPositionForPathbuilding();
         System.out.println("Print start position");
         //printMaze();
         //System.out.println("find RandDirection  :" + randomDirection);
 
 
         ChoosePathAndBuild();// chose a path randomly and try to make a path.
-
+        printMaze();
+        makeEntranceInBorder();
+        makeExitInBorder();
         insertMinotaur();
-        makeEntranceAndExitInBorders();
+
 
         System.out.println("END*******************************************************************************");
 
         printMaze();
-        Gui gui= new Gui(maze,totalHeight,totalWidth);
+        Minotaur minotaur = new Minotaur(maze,startMinotaurRow,startMinotaurColumn);
+        Gui gui= new Gui(minotaur,maze,totalHeight,totalWidth,startMinotaurRow,startMinotaurColumn);
 
 
     }
 
-    private void makeEntranceAndExitInBorders()
-    {
-        System.out.println("hi");
+    private void makeEntranceInBorder() {
+
         // make entrance
-        int randomRowForEntrance =((int) (Math.random()* (height-2))+2);
-
-
-        maze.get(randomRowForEntrance).set(0,"@");
-        maze.get(randomRowForEntrance).set(1,"S");
-        maze.get(randomRowForEntrance).set(2," ");
-
-
-        int randomRowForExit =((int) (Math.random()* (height-2))+2);
+        int randomRowForEntrance = ((int) (Math.random() * height) + 2);
         System.out.println("randomRowForEntrance "+ randomRowForEntrance);
+
+        if (maze.get(randomRowForEntrance).get(2).equals(" "))
+        {
+            maze.get(randomRowForEntrance).set(0, "@");
+            maze.get(randomRowForEntrance).set(1, "S");
+            maze.get(randomRowForEntrance).set(2, " ");
+        } else {
+            System.out.println("try to make intrance again");
+            makeEntranceInBorder();
+        }
+    }
+
+    private void makeExitInBorder()
+    {
+        int randomRowForExit =((int) (Math.random()* height)+2);
+
+
+
         System.out.println("randomRowForExit"+randomRowForExit);
 
+        if (maze.get(randomRowForExit).get(totalWidth-3).equals("+"))
+        {
+            System.out.println("try to make an other exit ");
+            makeExitInBorder();
+        }
+        else
+        {
         maze.get(randomRowForExit).set(totalWidth-1,"@");
         maze.get(randomRowForExit).set(totalWidth-2,"F");
         maze.get(randomRowForExit).set(totalWidth-3," ");
-
-
+            System.out.println("make exit");
+        }
 
     }
 
     private void insertMinotaur()
     {
-        int startMinotaurRow = (int)(Math.random() *height )+2; // the higher the number the further down the board you go
-        int startMinotaurColumn = (int)(Math.random() *width )+2;// the higher the number the further right the board you go
+
+        startMinotaurRow = (int)(Math.random() *height )+2; // the higher the number the further down the board you go
+        startMinotaurColumn = (int)(Math.random() *width )+2;// the higher the number the further right the board you go
 
         if (maze.get(startMinotaurRow).get(startMinotaurColumn).equals(" ")) {
             maze.get(startMinotaurRow).set(startMinotaurColumn, "M");
@@ -932,19 +967,22 @@ public class RecursiveBacktracker
             }
     }
 
-    private void makeRandomStartPosition()
+    private void makeStartPositionForPathbuilding()
     {
 
         // if startRow=2 and startColumn=2 its like 1,1 like a coordinate system that starts in the left corner.
         // makes a number 0-height or width (it also makes 0)
-        int startRow = (int)(Math.random() *height )+2; // the higher the number the further down the board you go
-        int startColumn = (int)(Math.random() *width )+2;// the higher the number the further right the board you go
-
+        startRow = 2;// (int)(Math.random() *height )+2; // the higher the number the further down the board you go
+        // startColumn has to be an even number to make nice mazes. otherwise the maze will have green eges..
+        startColumn =2;//(int)(Math.random() *width )+2;// the higher the number the further right the board you go
+        System.out.println("startColumn ->"+startColumn);
         // vil være første koordinatet:
         // startRow=2;
         //startColumn=2;
 
         maze.get(startRow).set(startColumn,"0");
+        //maze.get(startRow).set(startColumn+1,"0");
+
         // husk
         System.out.println("start position: ("+(startRow-1)+","+(startColumn-1)+")");
         currentRowPosition=startRow;

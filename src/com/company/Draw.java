@@ -20,15 +20,22 @@ import java.util.ArrayList;
 // extends Jpanel, because we draw on the Jpanel, not on the frame.
 public class Draw extends JPanel implements ActionListener,KeyListener
 {
+    final Minotaur minotaur;
+    int minotaurrow;//x
+    int minotaurColumn;// y
+
     ArrayList<ArrayList<String>> maze;
     // speed of the repaint
     Timer t = new Timer(10,this);
-    int x= 0, y=0 , velx = 0, vely = 0;
-    private int totalHeight;
-    private int totalWidth;
+    //velx , stands for velocity in x direction ect.
+    int x, y , velx = 0, vely = 0;
+    int totalHeight;
+    int totalWidth;
 
-    public Draw(ArrayList<ArrayList<String>> maze, int totalHeight, int totalWidth)
-    {
+    public Draw(Minotaur minotaur, ArrayList<ArrayList<String>> maze, int totalHeight, int totalWidth, int startMinotaurRow, int startMinotaurColumn)
+    {   this.minotaur= minotaur;
+        this.minotaurrow=startMinotaurRow;
+        this.minotaurColumn=startMinotaurColumn;
         this.totalWidth=totalWidth;
         this.totalHeight=totalHeight;
         this.maze = maze;
@@ -42,12 +49,12 @@ public class Draw extends JPanel implements ActionListener,KeyListener
 
 
 
-    public void drawing()
+    /*public void drawing()
     {
         // repaint() calls the paintComponent(Graphics g) methode.
 
         repaint();
-    }
+    }*/
 
 
     // allows us to draw graphics on the screen
@@ -65,58 +72,48 @@ public class Draw extends JPanel implements ActionListener,KeyListener
                 if(maze.get(j).get(i).equals(" "))
                 {
                     g.setColor(Color.WHITE);
-                    g.fillRect(i * 10, j * 10, 10, 10);
+                    g.fillRect(i * 20, j * 20, 20, 20);
                 }
                 else if(maze.get(j).get(i).equals("+"))
                 {
-                    g.setColor(Color.DARK_GRAY);
-                    g.fillRect(i * 10, j * 10, 10, 10);
+                    g.setColor(Color.GREEN);
+                    g.fillRect(i * 20, j * 20, 20, 20);
                 }
                 else if (maze.get(j).get(i).equals("M"))
                 {
                     g.setColor(Color.ORANGE);
-                    g.fillRect(i * 10, j * 10, 10, 10);
+                    g.fillRect(i * 20, j * 20, 20, 20);
                 }
                 else if (maze.get(j).get(i).equals("¤"))
                 {
                     g.setColor(Color.BLACK);
-                    g.fillRect(i * 10, j * 10, 10, 10);
+                    g.fillRect(i * 20, j * 20, 20, 20);
+                }
+                else if (maze.get(j).get(i).equals("@"))
+                {
+                    g.setColor(Color.BLUE);
+                    g.fillRect(i * 20, j * 20, 20, 20);
+                }
+                else if (maze.get(j).get(i).equals("S"))
+                {
+                    g.setColor(Color.MAGENTA);
+                    g.fillRect(i * 20, j * 20, 20, 20);
+                }
+                else if (maze.get(j).get(i).equals("F"))
+                {
+                    g.setColor(Color.RED);
+                    g.fillRect(i * 20, j * 20, 20, 20);
                 }
 
 
+
             }
-            //System.out.println();
         }
 
-        /*for (int i = 0; i < 6; i++)
-        {
-            for (int j = 0; j < 6; j++) {
-
-                if (maze.get(i).get(j).equals(" "))
-                {
-                    g.setColor(Color.PINK);
-                    g.fillRect(i * 10, j * 10, 10, 10);
-                }
-                else if (maze.get(i).get(j).equals("+")) ;
-                {
-                    g.setColor(Color.WHITE);
-                    g.fillRect(i * 10, j * 10, 10, 10);
-                }
-            }
-        }*/
-        //System.out.println(maze.get(1).get(1));
-
-        //Graphics2D g2 = (Graphics2D) g;
-        //g2.fillOval(x, 40,y,  40);
-                //(new Ellipse2D.Double(x,y,40,40));
+        //g.fillOval(minotaurrow,minotaurColumn);
         // int x, int y, int width, int height.
-        g.fillRect(x,y,20,20);
-        //g.fillRect(20,20,20,20);
-        /*g.setColor(Color.ORANGE);
-        g.fillRect(40,40,20,20);
-        g.setColor(Color.CYAN);
-        g.fillOval(60,60,20,20);
-        */
+        //g.fillRect(minotaurrow,minotaurColumn,20,20);
+
     }
 
     public void actionPerformed(ActionEvent e)
@@ -126,13 +123,14 @@ public class Draw extends JPanel implements ActionListener,KeyListener
         repaint();
 
         // change koordinates.
-        x+= velx;
-        y+= vely;
+        minotaurrow+= velx;
+        minotaurColumn+= vely;
 
     }
-
+    // move the minotaur.
     public void up()
     {
+
         vely= -1;
         velx= 0;
         System.out.println("up");
@@ -174,18 +172,23 @@ public class Draw extends JPanel implements ActionListener,KeyListener
         if(code == KeyEvent.VK_UP)
         {
             up();
+            minotaur.minotaurUp();
+
         }
         if(code == KeyEvent.VK_DOWN)
         {
+            minotaur.minotaurDown();
             down();
         }
         if(code == KeyEvent.VK_LEFT)
         {
             left();
+            minotaur.minotaurLeft();
         }
         if(code == KeyEvent.VK_RIGHT)
         {
             right();
+            minotaur.minotaurRight();
         }
     }
     // the two methodes below needs to be included because we implemented Keylistener.
